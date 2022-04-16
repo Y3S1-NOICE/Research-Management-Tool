@@ -19,15 +19,11 @@ const userSchema = new mongoose.Schema({
     phone: {
         type: String, required: false,
     },
-    groups: {
-        // will change after student_group schema is created 
-        type: String, required: false,
-    },
     password: {
         type: String, required: true,
     }
 });
 
-const mapToUserModel = mongoose.model('user', userSchema);
+const user = mongoose.model('user', userSchema);
 
-export default mapToUserModel;
+export default user;
