@@ -1,8 +1,11 @@
 import express from "express";
-import { createUser } from "../services/userService.js";
+import { deleteUser, findUsers, registerUser, updateUser } from "../services/userService.js";
 
 const router = express.Router();
 
-router.post('/', createUser);
+router.get('/', findUsers);
+router.post('/', registerUser);
+router.put('/', updateUser);
+router.delete('/', deleteUser);
 
 export default router;
