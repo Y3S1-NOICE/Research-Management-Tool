@@ -3,7 +3,8 @@ import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
 import { errorMessage } from "../utils/errorMessages.js";
 
-const createPanel = (req, res) => {
+//create panel
+const createPanel =  (req, res ) => {
     const newPanel = panel(req.body);
     newPanel.save((error) => {
         error ? 
@@ -14,4 +15,15 @@ const createPanel = (req, res) => {
     });
 }
 
-export { createPanel };
+//fetch panels
+const getAllPanels = ( res ) =>{
+    panel.find((error, panels) =>{
+        error ?
+            res.staus(http.SERVER_ERROR)
+                .json(jsonResponse(false, error, error._message)) :
+            res.status(http.OK)
+                .json(jsonResponse(true, panels));
+    })
+}
+
+export { createPanel, getAllPanels };
