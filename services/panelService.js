@@ -10,7 +10,7 @@ const createPanel = (req, res) => {
             res.status(http.BAD_REQUEST)
                 .json(jsonResponse(false, error, error._message)) :
             res.status(http.CREATED)
-                .json(jsonResponse(true, newUser));
+                .json(jsonResponse(true, newPanel));
     });
 }
 
