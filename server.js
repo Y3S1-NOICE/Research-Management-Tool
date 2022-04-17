@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDatabase from "./database/connection.js"
 import { default as userRouter } from "./routes/userRoutes.js";
+import { default as studentGroupRouter } from "./routes/studentGroupRoutes.js";
 
 // Enable .env file
 dotenv.config();
@@ -17,6 +18,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/user', userRouter);
+app.use('/group', studentGroupRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${PORT}`);
