@@ -46,4 +46,20 @@ const updatePanel = (req, res) => {
                     .json(jsonResponse(true, updatedPanel));
     });       
 }
-export { createPanel, getAllPanels, updatePanel };
+
+//delete panel
+const deletePanel = (req, res) => {
+    const filter = { id: req.params.id || 'inavlidId' };
+
+    panel.findOneAndDelete(filter, (error, deletedPanel) => {
+        !deletedPanel ? 
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, deletedUser, errorMessage.PANEL_NOT_FOUND)) :
+            error ? 
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, deletedPanel));
+    });       
+}
+export { createPanel, getAllPanels, updatePanel, deletePanel };
