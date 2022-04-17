@@ -9,7 +9,7 @@ const studentGroupSchema = new mongoose.Schema({
     
     researchTopic: researchTopicSchema, //SubDoc reaserchTopic
 
-    studentId: [String],
+    studentsId: [String],
 
     supervisorId: {
         type: String,

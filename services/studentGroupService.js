@@ -14,4 +14,17 @@ const registerStudentGroup = (req, res) =>{
     });
 }
 
-export {registerStudentGroup};
+//Fetch all student groups
+const fetchAllStudentGroups = (req, res) =>{
+    const fields = 'id status topicEvaluationPanelId presentationEvaluationPanelId'
+    var query = studentGroup.find({}).select(fields); //Only returns requested fields
+    query.exec((error, studentGroups) => {
+        error ?
+            res.staus(http.SERVER_ERROR)
+                .json(jsonResponse(false, error, error._message)) :
+            res.status(http.OK)
+                .json(jsonResponse(true, studentGroups));
+    })
+}
+
+export {registerStudentGroup, fetchAllStudentGroups};
