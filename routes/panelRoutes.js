@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/', createPanel);
 router.get('/', getAllPanels);
-router.put('/updatePanel/:id', updatePanel);
+router.put('/:id', updatePanel);
 
 export default router;
