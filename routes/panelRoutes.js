@@ -3,6 +3,6 @@ import { createPanel } from "../services/panelService.js";
 
 const router = express.Router();
 
-router.post('/', createPanel);
+router.post('/createPanel', createPanel);
 
 export default router;
