@@ -1,9 +1,10 @@
 import express from "express";
-import { createPanel, getAllPanels } from "../services/panelService.js";
+import { createPanel, getAllPanels, updatePanel } from "../services/panelService.js";
 
 const router = express.Router();
 
-router.post('/createPanel', createPanel);
-router.post('/getAllPanels', getAllPanels);
+router.post('/', createPanel);
+router.get('/', getAllPanels);
+router.put('/updatePanel/:id', updatePanel);
 
 export default router;

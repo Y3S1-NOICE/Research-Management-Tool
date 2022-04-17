@@ -11,9 +11,9 @@ const panelSchema = new mongoose.Schema({
         allocatedGroups: [String],
         //evaluation: [evaluationSchema], required: false,
     },
-    {
-        timestamps: true,
-    }
+        {
+            timestamps: true,
+        }
 );
 
 const panel = mongoose.model('panel', panelSchema);

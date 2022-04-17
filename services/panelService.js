@@ -16,14 +16,34 @@ const createPanel =  (req, res ) => {
 }
 
 //fetch panels
-const getAllPanels = ( res ) =>{
-    panel.find((error, panels) =>{
+const getAllPanels = ( req, res ) => {
+    panel.find((error, allPanels) => {
         error ?
-            res.staus(http.SERVER_ERROR)
+            res.status(http.SERVER_ERROR)
                 .json(jsonResponse(false, error, error._message)) :
             res.status(http.OK)
-                .json(jsonResponse(true, panels));
+                .json(jsonResponse(true, allPanels));
     })
 }
 
-export { createPanel, getAllPanels };
+//update panel
+const updatePanel = (req, res) => {
+    const filter = { id: req.params.id || 'inavlidId' };
+    const getUpdatedData = { 
+        id: req.body.id,
+        supervisors: req.body.supervisors,
+        allocatedGroups: req.body.allocatedGroups
+     };
+
+    panel.findOneAndUpdate(filter, req.body, getUpdatedData, (error, updatedPanel) => {
+        !updatedPanel ? 
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, updatedPanel, errorMessage.PANEL_NOT_FOUND)) :
+            error ? 
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, updatedPanel));
+    });       
+}
+export { createPanel, getAllPanels, updatePanel };
