@@ -1,21 +1,15 @@
 import mongoose from "mongoose";
+// import evaluationSchema from "./evaluation.js";
 
 const panelSchema = new mongoose.Schema({
         id: {
             type: String, 
             required: true, 
             unique: true,
-        }, 
+        },
         supervisors: [String],
         allocatedGroups: [String],
-        groupStatus: {
-            type: String, 
-            required: true,
-        },
-        panelType: {
-            type: String, 
-            required: true,
-        },
+        //evaluation: [evaluationSchema], required: false,
     },
     {
         timestamps: true,
