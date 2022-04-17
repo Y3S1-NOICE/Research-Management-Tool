@@ -30,8 +30,9 @@ const studentGroupSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    
+    evaluation: evaluationSchema, required: false, //SubDoc evaluation
 
-    evaluation: evaluationSchema //SubDoc evaluation
 });
 
 const studentGroup = mongoose.model('studentGroup', studentGroupSchema);
