@@ -27,7 +27,7 @@ app.use('/login', authRouter);
 app.use(authenticate);
 
 app.use('/user', userRouter);
-app.use('/group', studentGroupRouter);
+app.use('/groups', studentGroupRouter);
 app.use('/panel', panelRouter);
 
 app.listen(process.env.PORT, () => {

@@ -54,7 +54,7 @@ const deletePanel = (req, res) => {
     panel.findOneAndDelete(filter, (error, deletedPanel) => {
         !deletedPanel ? 
             res.status(http.NOT_FOUND)
-                .json(jsonResponse(false, deletedUser, errorMessage.PANEL_NOT_FOUND)) :
+                .json(jsonResponse(false, deletedPanel, errorMessage.PANEL_NOT_FOUND)) :
             error ? 
                 res.status(http.BAD_REQUEST)
                     .json(jsonResponse(false, error, error._message)) :
