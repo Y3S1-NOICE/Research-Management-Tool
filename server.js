@@ -1,9 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectDatabase from "./database/connection.js"
+import { authenticate } from "./middleware/auth.js";
 import { default as userRouter } from "./routes/userRoutes.js";
 import { default as authRouter } from "./routes/authRoutes.js";
-import { authenticate } from "./middleware/auth.js";
+import { default as studentGroupRouter } from "./routes/studentGroupRoutes.js";
+import { default as panelRouter } from "./routes/panelRoutes.js";
 
 // Enable .env file
 dotenv.config();
@@ -21,6 +23,8 @@ app.use(authenticate);
 
 app.use('/login', authRouter);
 app.use('/user', userRouter);
+app.use('/group', studentGroupRouter);
+app.use('/panel', panelRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${PORT}`);
