@@ -19,7 +19,7 @@ const registerStudentGroup = (req, res) =>{
 const fetchAllStudentGroups = (req, res) =>{
     studentGroup.find((error, studentGroups) =>{
         error ?
-            res.staus(http.SERVER_ERROR)
+            res.status(http.SERVER_ERROR)
                 .json(jsonResponse(false, error, error._message)) :
             res.status(http.OK)
                 .json(jsonResponse(true, studentGroups));
