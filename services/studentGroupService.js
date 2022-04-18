@@ -67,11 +67,11 @@ const requestCoSupervisor = (req, res) =>{
     });
 }
 
-//Allocate panels to student groups
-const allocatePanels = (req, res) =>{
+//Allocate panels to student groups or Deallocate panels from student groups
+const allocateOrDeallocatePanels = (req, res) =>{
     const filter = {id: req.params.id};
     if(req.body.presentationEvaluationPanelId && req.body.topicEvaluationPanelId){ //Check if both panels are in the reqBody
-        const getPanelData ={ //Assign both
+        const getPanelData ={ //Assign body data
             topicEvaluationPanelId: req.body.topicEvaluationPanelId,
             presentationEvaluationPanelId: req.body.presentationEvaluationPanelId
         }
@@ -86,7 +86,7 @@ const allocatePanels = (req, res) =>{
                         .json(jsonResponse(true, getPanelData))
         })
     }else if(req.body.topicEvaluationPanelId){//Check panel type in the reqBody
-        const getPanelData = { //Assign panel
+        const getPanelData = { //Assign body data
             topicEvaluationPanelId: req.body.topicEvaluationPanelId
         }
         studentGroup.findOneAndUpdate(filter, getPanelData,(error, updatedGroupDetails) =>{
@@ -100,7 +100,7 @@ const allocatePanels = (req, res) =>{
                         .json(jsonResponse(true, getPanelData))
         })
     }else if(req.body.presentationEvaluationPanelId){//Check panel type in the reqBody
-        const getPanelData ={//Assign panel
+        const getPanelData ={ //Assign body data
             presentationEvaluationPanelId: req.body.presentationEvaluationPanelId
         }
         studentGroup.findOneAndUpdate(filter, getPanelData,(error, updatedGroupDetails) =>{
@@ -119,4 +119,4 @@ const allocatePanels = (req, res) =>{
     }
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocatePanels};
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels};
