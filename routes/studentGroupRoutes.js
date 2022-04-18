@@ -1,11 +1,15 @@
 import express from "express";
-import { fetchAllStudentGroups, registerStudentGroup, requestSupervisor, requestCoSupervisor} from "../services/studentGroupService.js";
+import { authorize } from "../middleware/auth.js";
+import { fetchAllStudentGroups, registerStudentGroup, requestSupervisor, requestCoSupervisor, allocatePanels} from "../services/studentGroupService.js";
+import { roles } from "../utils/utilities.js";
+const {STUDENT, ADMIN} = roles;
 
 const router = express.Router();
 
-router.post('/', registerStudentGroup);
-router.get('/', fetchAllStudentGroups);
-router.put('/supervisor/:id', requestSupervisor);
-router.put('/cosupervisor/:id', requestCoSupervisor);
+router.post('/', authorize(STUDENT), registerStudentGroup);
+router.get('/', authorize(ADMIN), fetchAllStudentGroups);
+router.put('/:id/supervisors', authorize(STUDENT), requestSupervisor);
+router.put('/:id/cosupervisors', authorize(STUDENT), requestCoSupervisor);
+router.put('/:id/panels', authorize(ADMIN), allocatePanels);
 
 export default router;

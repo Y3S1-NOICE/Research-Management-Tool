@@ -67,8 +67,56 @@ const requestCoSupervisor = (req, res) =>{
     });
 }
 
+//Allocate panels to student groups
+const allocatePanels = (req, res) =>{
+    const filter = {id: req.params.id};
+    if(req.body.presentationEvaluationPanelId && req.body.topicEvaluationPanelId){ //Check if both panels are in the reqBody
+        const getPanelData ={ //Assign both
+            topicEvaluationPanelId: req.body.topicEvaluationPanelId,
+            presentationEvaluationPanelId: req.body.presentationEvaluationPanelId
+        }
+        studentGroup.findOneAndUpdate(filter, getPanelData,(error, updatedGroupDetails) =>{
+            error ?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                !updatedGroupDetails ?
+                    res.status(http.NOT_FOUND)
+                        .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                    res.status(http.OK)
+                        .json(jsonResponse(true, getPanelData))
+        })
+    }else if(req.body.topicEvaluationPanelId){//Check panel type in the reqBody
+        const getPanelData = { //Assign panel
+            topicEvaluationPanelId: req.body.topicEvaluationPanelId
+        }
+        studentGroup.findOneAndUpdate(filter, getPanelData,(error, updatedGroupDetails) =>{
+            error ?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                !updatedGroupDetails ?
+                    res.status(http.NOT_FOUND)
+                        .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                    res.status(http.OK)
+                        .json(jsonResponse(true, getPanelData))
+        })
+    }else if(req.body.presentationEvaluationPanelId){//Check panel type in the reqBody
+        const getPanelData ={//Assign panel
+            presentationEvaluationPanelId: req.body.presentationEvaluationPanelId
+        }
+        studentGroup.findOneAndUpdate(filter, getPanelData,(error, updatedGroupDetails) =>{
+            error ?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                !updatedGroupDetails ?
+                    res.status(http.NOT_FOUND)
+                        .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                    res.status(http.OK)
+                        .json(jsonResponse(true, getPanelData))
+        })
+    }else{//Invalid req body
+        res.status(http.BAD_REQUEST)
+            .json(jsonResponse(false, errorMessage.INVALID_REQUEST));
+    }
+}
 
-
-
-
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor};
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocatePanels};
