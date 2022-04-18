@@ -19,9 +19,13 @@ const app = express();
 
 // Let express know, to use Json for http requests and response.
 app.use(express.json());
-app.use(authenticate);
 
 app.use('/login', authRouter);
+
+// This line(line 27) will authenticate every route/request below this line.
+//If you do not want to authenticate your request/route, add your route above this line as in line 23
+app.use(authenticate);
+
 app.use('/user', userRouter);
 app.use('/group', studentGroupRouter);
 app.use('/panel', panelRouter);

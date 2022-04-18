@@ -17,7 +17,7 @@ const login = (req, res) => {
             const { id, role, email } = users[0];
             const authBody = { id, role, email };
             const accessToken = jwt.sign(authBody, process.env.AUTH_SECRET);
-            res.status(http.OK).json(jsonResponse(true, accessToken));
+            res.status(http.OK).json(jsonResponse(true, {accessToken}));
 
         } else {
             res.status(http.AUTHENTICATION_FAIL).json(jsonResponse(false, null, errorMessage.AUTH_FAIL ));
