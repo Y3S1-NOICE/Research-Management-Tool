@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// import evaluationSchema from "./evaluation.js";
+import evaluationSchema from "./evaluation.js";
 
 const panelSchema = new mongoose.Schema({
         id: {
@@ -7,9 +7,9 @@ const panelSchema = new mongoose.Schema({
             required: true, 
             unique: true,
         },
-        supervisors: [String],
+        supervisors: [[String]],
         allocatedGroups: [String],
-        //evaluation: [evaluationSchema], required: false,
+        evaluation: [[evaluationSchema]], required: false,
     },
         {
             timestamps: true,
