@@ -7,9 +7,8 @@ const panelSchema = new mongoose.Schema({
             required: true, 
             unique: true,
         },
-        supervisors: [[String]],
+        panelMembers: [String],
         allocatedGroups: [String],
-        evaluation: [[evaluationSchema]], required: false,
     },
         {
             timestamps: true,
