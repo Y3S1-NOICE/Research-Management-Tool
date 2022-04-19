@@ -36,7 +36,7 @@ const requestSupervisor = (req, res) =>{
     studentGroup.findOneAndUpdate(filter, getUpdatedData, (error, updatedGroupDetails) =>{
         !updatedGroupDetails ?
             res.status(http.NOT_FOUND)
-                .json(jsonResponse(false, updatedGroupDetails, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
             error?
                 res.status(http.BAD_REQUEST)
                     .json(jsonResponse(false, error, error._message)) :
@@ -48,23 +48,30 @@ const requestSupervisor = (req, res) =>{
 //Request coSupervisors
 const requestCoSupervisor = (req, res) =>{
     const filter = {id: req.params.id};
+    const topicFilter = {id:req.params.id, status: "Topic Accepted"}
     const getUpdatedData = {
         coSupervisorId: req.body.coSupervisorId,
         status: "Co Supervisor Pending"
     }
-    studentGroup.findOneAndUpdate(filter, getUpdatedData, (error, updatedGroupDetails) =>{
-        error?
-            res.status(http.BAD_REQUEST)
-                .json(jsonResponse(false, error, error._message)) :
-            !updatedGroupDetails ?
-                res.status(http.NOT_FOUND)
-                    .json(jsonResponse(false, updatedGroupDetails, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
-                updatedGroupDetails.status === "Topic Accepted" ? //Checks if topic is accepted
+
+    studentGroup.findOne(filter, (error, groupDetails) =>{
+        error ?
+        res.status(http.BAD_REQUEST)
+            .json(jsonResponse(false, error, error._message)) :
+        !groupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            studentGroup.findOneAndUpdate(topicFilter, getUpdatedData, (error, details) =>{
+                error ?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                !details ?
+                    res.status(http.NOT_FOUND)
+                        .json(jsonResponse(false, errorMessage.TOPIC_NOT_ACCEPTED)) :
                     res.status(http.OK)
-                        .json(jsonResponse(true, getUpdatedData)) :
-                    res.status(http.BAD_REQUEST)
-                        .json(jsonResponse(false, errorMessage.TOPIC_NOT_ACCEPTED));
-    });
+                        .json(jsonResponse(true, getUpdatedData))
+            })
+    })
 }
 
 //Allocate panels to student groups or Deallocate panels from student groups
@@ -119,4 +126,24 @@ const allocateOrDeallocatePanels = (req, res) =>{
     }
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels};
+//Assign Marks to student groups
+const assignMarks = (req, res) =>{
+    const filter = {id: req.params.id};
+    const getEvaluationDetails = {
+        id:req.body.id,
+        evaluationType: req.body.evaluationType,
+        marks:req.body.marks
+    }
+    studentGroup.findOneAndUpdate(filter, {$push: {evaluation : getEvaluationDetails}}, (error, groupDetails) =>{
+        error ?
+            res.status(http.BAD_REQUEST)
+                .json(jsonResponse(false, error, error._message)) :
+        !groupDetails?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getEvaluationDetails))
+    })
+}
+
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks};
