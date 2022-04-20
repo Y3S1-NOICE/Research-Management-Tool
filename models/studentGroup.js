@@ -31,7 +31,7 @@ const studentGroupSchema = new mongoose.Schema({
         type: String,
     },
     
-    evaluation: evaluationSchema, required: false, //SubDoc evaluation
+    evaluation: [evaluationSchema], required: false, //SubDoc evaluation
 
 });
 
