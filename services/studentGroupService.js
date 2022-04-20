@@ -53,24 +53,15 @@ const requestCoSupervisor = (req, res) =>{
         coSupervisorId: req.body.coSupervisorId,
         status: "Co Supervisor Pending"
     }
-
-    studentGroup.findOne(filter, (error, groupDetails) =>{
+    studentGroup.findOneAndUpdate(topicFilter, coSupervisorData, (error, groupDetails) =>{
         error ?
             res.status(http.BAD_REQUEST)
                 .json(jsonResponse(false, error, error._message)) :
         !groupDetails ?
             res.status(http.NOT_FOUND)
-                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
-            studentGroup.findOneAndUpdate(topicFilter, coSupervisorData, (error, groupDetails) =>{
-                error ?
-                    res.status(http.BAD_REQUEST)
-                        .json(jsonResponse(false, error, error._message)) :
-                !groupDetails ?
-                    res.status(http.NOT_FOUND)
-                        .json(jsonResponse(false, errorMessage.TOPIC_NOT_ACCEPTED)) :
-                    res.status(http.OK)
-                        .json(jsonResponse(true, coSupervisorData))
-            })
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_WITH_STATUS_NOT_FOUND)) :
+            res.status(http.OK)
+                .json(jsonResponse(true, coSupervisorData))
     })
 }
 
