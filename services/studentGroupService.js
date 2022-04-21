@@ -28,7 +28,7 @@ const fetchAllStudentGroups = (req, res) =>{
 
 //Request supervisors
 const requestSupervisor = (req, res) =>{
-    const filter = {id: req.params.id};
+    const filter = {id: req.params.id || 'inavlidId' };
     const getSupervisorData = {
         supervisorId: req.body.supervisorId,
         status: "Topic Registered"
@@ -47,7 +47,7 @@ const requestSupervisor = (req, res) =>{
 
 //Request coSupervisors
 const requestCoSupervisor = (req, res) =>{
-    const filter = {id: req.params.id};
+    const filter = {id: req.params.id || 'inavlidId' };
     const topicFilter = {id:req.params.id, status: "Topic Accepted"}
     const coSupervisorData = {
         coSupervisorId: req.body.coSupervisorId,
@@ -67,7 +67,7 @@ const requestCoSupervisor = (req, res) =>{
 
 //Allocate panels to student groups or Deallocate panels from student groups
 const allocateOrDeallocatePanels = (req, res) =>{
-    const filter = {id: req.params.id};
+    const filter = {id: req.params.id || 'inavlidId' };
     if(req.body.presentationEvaluationPanelId && req.body.topicEvaluationPanelId){ //Check if both panels are in the reqBody
         const getPanelData ={ //Assign body data
             topicEvaluationPanelId: req.body.topicEvaluationPanelId,
@@ -119,7 +119,7 @@ const allocateOrDeallocatePanels = (req, res) =>{
 
 //Assign Marks to student groups
 const assignMarks = (req, res) =>{
-    const filter = {id: req.params.id};
+    const filter = {id: req.params.id || 'inavlidId' };
     const getEvaluationData = {
         id:req.body.id,
         evaluationType: req.body.evaluationType,
@@ -137,4 +137,19 @@ const assignMarks = (req, res) =>{
     })
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks};
+//Fetch specific studentGroup
+const fetchStudentGroup = (req, res) =>{
+    const filter = {id: req.params.id || 'inavlidId' };
+    studentGroup.findOne(filter, (error, groupDetails) =>{
+        error ?
+            res.status(http.BAD_REQUEST)
+                .json(jsonResponse(false, error, error._message)) :
+            !groupDetails ?
+                res.status(http.NOT_FOUND)
+                    .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, groupDetails));
+    })
+}
+
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup};
