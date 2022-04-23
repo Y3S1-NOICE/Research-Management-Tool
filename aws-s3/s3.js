@@ -25,6 +25,7 @@ const upload = (folder, file) => {
   return s3.upload(params).promise()
 }
 
+// delete a file from s3
 const deleteFromS3 = (fileKey) => {
   const params = {
     Bucket: bucketName,
