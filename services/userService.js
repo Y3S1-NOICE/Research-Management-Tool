@@ -5,10 +5,11 @@ import { errorMessage } from "../utils/errorMessages.js";
 
 const findUsers = (req, res) => {
     const filter = {};
-    const {id, name, role} = req.query;
+    const {id, name, role, interestArea} = req.query;
         id && (filter.id = id); 
         name && (filter.name = name);
         role && (filter.role = role);
+        interestArea && (filter.interestArea = interestArea);
 
     user.find(filter, (error, users) => {
         error ? 
