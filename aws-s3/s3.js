@@ -8,17 +8,11 @@ const region = process.env.AWS_BUCKET_REGION
 const accessKeyId = process.env.AWS_ACCESS_KEY
 const secretAccessKey = process.env.AWS_SECRET_KEY
 
-// const bucketName = 'rmt-bucket-1.0v'
-// const region = 'us-east-1'
-// const accessKeyId = 'AKIAXGEKLOVCDR6CWBH2'
-// const secretAccessKey = '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'
-
-
 const s3 = new S3({
   region,
   accessKeyId,
   secretAccessKey
-})
+});
 
 // uploads a file to s3
 const upload = (folder, file) => {
@@ -29,6 +23,14 @@ const upload = (folder, file) => {
     Key: folder+'/'+file.originalname
   }
   return s3.upload(params).promise()
+}
+
+const deleteFromS3 = (fileKey) => {
+  const params = {
+    Bucket: bucketName,
+    Key: fileKey
+  }
+  return s3.deleteObject(params).promise();
 }
 
 // retrieve files meta-data from s3
@@ -47,7 +49,7 @@ function download(fileKey) {
     Key: fileKey,
     Bucket: bucketName
   }
-  return s3.getObject(params).createReadStream()
+  return s3.getObject(params).createReadStream();
 }
 
-export { upload, download, getFilesMetaData };
+export { upload, download, getFilesMetaData, deleteFromS3 };
