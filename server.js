@@ -7,6 +7,8 @@ import { default as authRouter } from "./routes/authRoutes.js";
 import { default as studentGroupRouter } from "./routes/studentGroupRoutes.js";
 import { default as panelRouter } from "./routes/panelRoutes.js";
 
+
+
 // Enable .env file
 dotenv.config();
 const PORT = process.env.PORT;
@@ -29,6 +31,7 @@ app.use(authenticate);
 app.use('/user', userRouter);
 app.use('/groups', studentGroupRouter);
 app.use('/panel', panelRouter);
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${PORT}`);
