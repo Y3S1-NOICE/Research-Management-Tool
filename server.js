@@ -7,6 +7,7 @@ import { default as userRouter } from "./routes/userRoutes.js";
 import { default as authRouter } from "./routes/authRoutes.js";
 import { default as studentGroupRouter } from "./routes/studentGroupRoutes.js";
 import { default as panelRouter } from "./routes/panelRoutes.js";
+import { default as chatRouter } from "./routes/chatGroupRoutes.js";
 import { default as submissionRouter } from "./routes/submissionRoutes.js";
 
 // Enable .env file
@@ -30,6 +31,7 @@ app.use(authenticate);
 app.use('/user', userRouter);
 app.use('/groups', studentGroupRouter);
 app.use('/panel', panelRouter);
+app.use('/chat', chatRouter);
 app.use('/submissions', submissionRouter);
 
 app.listen(process.env.PORT, () => {
