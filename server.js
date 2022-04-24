@@ -10,6 +10,7 @@ import { default as panelRouter } from "./routes/panelRoutes.js";
 import { default as submissionRouter } from "./routes/submissionRoutes.js";
 import { default as submissionTypesRouter } from "./routes/submissionTypesRoutes.js";
 import { default as templateRoutes } from "./routes/templateRoutes.js";
+import { default as markingSchemeRoutes } from "./routes/markingSchemeRoutes.js";
 
 // Enable .env file
 dotenv.config();
@@ -35,6 +36,7 @@ app.use('/panel', panelRouter);
 app.use('/submissions', submissionRouter);
 app.use('/submissiontypes', submissionTypesRouter);
 app.use('/templates', templateRoutes);
+app.use('/markingSchemes', markingSchemeRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${PORT}`);
