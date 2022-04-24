@@ -7,4 +7,6 @@ export const errorMessage = {
     PANEL_NOT_FOUND: "Requested Panel not found!",
     INVALID_REQUEST: "Request is invalid!",
     CHAT_NOT_FOUND: "Chat Group not found, Try again.",
+    UPLOAD_FAIL: "Upload failed!",
+    RETRIEVE_FILES_FAIL: "Something went wrong. Files could not retrieve!"
 }
