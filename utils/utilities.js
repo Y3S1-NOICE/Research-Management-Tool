@@ -3,5 +3,5 @@ export const roles = {
     SUPERVISOR: 'Supervisor',
     PANEL_MEMBER: 'PanelMember',
     ADMIN: 'Admin',
-    GROUP_LEADER: 'Chat Group Leader'
+    GROUP_LEADER: 'ChatGroupLeader'
 }
