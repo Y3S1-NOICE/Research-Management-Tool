@@ -21,7 +21,11 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String, required: true,
+    },
+    interestArea: {
+        type: String, required: false,
     }
+    
 });
 
 const user = mongoose.model('user', userSchema);
