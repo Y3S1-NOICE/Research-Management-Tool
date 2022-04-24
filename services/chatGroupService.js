@@ -1,4 +1,4 @@
-import chat from "../models/chatGroup";
+import chat from "../models/chatGroup.js";
 import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
 import { errorMessage } from "../utils/errorMessages.js";
