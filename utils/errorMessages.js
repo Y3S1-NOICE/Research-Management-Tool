@@ -8,5 +8,8 @@ export const errorMessage = {
     INVALID_REQUEST: "Request is invalid!",
     CHAT_NOT_FOUND: "Chat Group not found, Try again.",
     UPLOAD_FAIL: "Upload failed!",
-    RETRIEVE_FILES_FAIL: "Something went wrong. Files could not retrieve!"
+    RETRIEVE_FILES_FAIL: "Something went wrong. Files could not retrieve!",
+    SUBMISSION_TYPE_NOT_FOUND: "Submission type not found!",
+    TEMPLATE_NOT_FOUND: "Template not found!",
+    MARKING_SCHEME_NOT_FOUND: "Marking Scheme not found"
 }
