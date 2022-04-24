@@ -8,7 +8,7 @@ import { default as authRouter } from "./routes/authRoutes.js";
 import { default as studentGroupRouter } from "./routes/studentGroupRoutes.js";
 import { default as panelRouter } from "./routes/panelRoutes.js";
 import { default as submissionRouter } from "./routes/submissionRoutes.js";
-
+import { default as submissionTypesRouter } from "./routes/submissionTypesRoutes.js";
 // Enable .env file
 dotenv.config();
 const PORT = process.env.PORT;
@@ -31,6 +31,7 @@ app.use('/user', userRouter);
 app.use('/groups', studentGroupRouter);
 app.use('/panel', panelRouter);
 app.use('/submissions', submissionRouter);
+app.use('/submissiontypes', submissionTypesRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -7,5 +7,6 @@ export const errorMessage = {
     PANEL_NOT_FOUND: "Requested Panel not found!",
     INVALID_REQUEST: "Request is invalid!",
     UPLOAD_FAIL: "Upload failed!",
-    RETRIEVE_FILES_FAIL: "Something went wrong. Files could not retrieve!"
+    RETRIEVE_FILES_FAIL: "Something went wrong. Files could not retrieve!",
+    SUBMISSION_TYPE_NOT_FOUND: "Submission type not found"
 }
