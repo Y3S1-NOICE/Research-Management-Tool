@@ -2,5 +2,6 @@ export const roles = {
     STUDENT: 'Student',
     SUPERVISOR: 'Supervisor',
     PANEL_MEMBER: 'PanelMember',
-    ADMIN: 'Admin'
+    ADMIN: 'Admin',
+    GROUP_LEADER: 'Chat Group Leader'
 }
