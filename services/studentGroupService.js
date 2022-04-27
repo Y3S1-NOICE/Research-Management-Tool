@@ -152,16 +152,17 @@ const fetchStudentGroup = (req, res) =>{
     })
 }
 
-
-//Add research topic
-const addResearchTopic = (req, res) =>{
+//Add and Accept research topic
+const updateResearchTopicDetails = (req, res) => {
     const filter = {id: req.params.id || 'inavlidId' };
     const getTopicDetails = {
-       researchTopic:{
-           topic:req.body.topic,
-           area:req.body.area
+        researchTopic: {
+           topic: req.body.topic,
+           area: req.body.area,
+           supervisorIsAccepted: req.body.supervisorIsAccepted? req.body.supervisorIsAccepted : "Not Accepted",
+           coSupervisorIsAccepted: req.body.supervisorIsAccepted === "ACCEPTED"? req.body.coSupervisorIsAccepted : "Not Accepted"
         }
-       }
+    }
     studentGroup.findOneAndUpdate(filter, getTopicDetails, (error, updatedGroupDetails) =>{
         !updatedGroupDetails ?
             res.status(http.NOT_FOUND)
@@ -174,4 +175,4 @@ const addResearchTopic = (req, res) =>{
     });
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup,addResearchTopic};
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup, updateResearchTopicDetails};

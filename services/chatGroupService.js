@@ -41,6 +41,49 @@ const getChatGroup = (req, res) =>{
     })
 }
 
+//send messages
+// const sendMessages = (req, res) =>{
+//     const filter = {id: req.params.id || 'inavlidId' };
+//     const getMessageData = {
+//         messages: {
+//             id:req.body.id,
+//             content: req.body.content,
+//             sender:req.body.sender
+//         }
+//     }
+    // chat.findOneAndUpdate(filter, {$push: {messages : getMessageData}}, (error, chatDetails) =>{
+//         error ?
+//             res.status(http.BAD_REQUEST)
+//                 .json(jsonResponse(false, error, error._message)) :
+//         !chatDetails?
+//             res.status(http.NOT_FOUND)
+//                 .json(jsonResponse(false, errorMessage.CHAT_NOT_FOUND)) :
+//                 res.status(http.OK)
+//                     .json(jsonResponse(true, getMessageData))
+//     })
+// }
+
+const sendMessages = (req, res) => {
+    const filter = {id: req.params.id || 'inavlidId' };
+    const getMessageData = {
+        messages: {
+            id:req.body.id,
+            content: req.body.content,
+            sender:req.body.sender
+        }
+    }
+    chat.findOneAndUpdate(filter,  {$push: {messages : getMessageData}}, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            error?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getMessageData));
+    });
+}
+
 //update chat group
 const updateChatGroupDetails = (req, res) =>{
     const filter = {id: req.params.id || 'inavlidId' };
@@ -77,6 +120,6 @@ const deleteChatGroup = (req, res) => {
     });       
 }
 
-export { createChatGroup, getAllChatGroups, getChatGroup, updateChatGroupDetails, deleteChatGroup };
+export { createChatGroup, getAllChatGroups, getChatGroup, updateChatGroupDetails, deleteChatGroup, sendMessages };
 
 
