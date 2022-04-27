@@ -12,10 +12,12 @@ const researchTopicSchema = new mongoose.Schema({
         type: String, 
         required: true,
     },
+
     supervisorIsAccepted: {
         type: String,
         default: "Not Accepted"
     },
+    
     coSupervisorIsAccepted: {
         type: String,
         default: "Not Accepted"
