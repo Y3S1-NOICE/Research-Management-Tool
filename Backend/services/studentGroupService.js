@@ -152,4 +152,26 @@ const fetchStudentGroup = (req, res) =>{
     })
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup};
+
+//Add research topic
+const addResearchTopic = (req, res) =>{
+    const filter = {id: req.params.id || 'inavlidId' };
+    const getTopicDetails = {
+       researchTopic:{
+           topic:req.body.topic,
+           area:req.body.area
+        }
+       }
+    studentGroup.findOneAndUpdate(filter, getTopicDetails, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            error?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getTopicDetails));
+    });
+}
+
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup,addResearchTopic};
