@@ -1,10 +1,18 @@
 import React from "react";
+import Login from "./pages/Login";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Users from "./pages/users/Users";
 
 const App = () =>{
+
     return (
-        <h1>
-            Welcome to RMT!
-        </h1>
+        <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/users" element={<Users />} />
+
+        </Routes>
+      </BrowserRouter>
     )
 }
 

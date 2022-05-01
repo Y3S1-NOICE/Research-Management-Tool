@@ -33,7 +33,7 @@ app.use('/login', authRouter);
 //If you do not want to authenticate your request/route, add your route above this line as in line 23
 app.use(authenticate);
 
-app.use('/user', userRouter);
+app.use('/users', userRouter);
 app.use('/groups', studentGroupRouter);
 app.use('/panels', panelRouter);
 app.use('/chats', chatRouter);
