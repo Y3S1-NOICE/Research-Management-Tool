@@ -35,8 +35,8 @@ app.use(authenticate);
 
 app.use('/user', userRouter);
 app.use('/groups', studentGroupRouter);
-app.use('/panel', panelRouter);
-app.use('/chat', chatRouter);
+app.use('/panels', panelRouter);
+app.use('/chats', chatRouter);
 app.use('/submissions', submissionRouter);
 app.use('/submissiontypes', submissionTypesRouter);
 app.use('/templates', templateRoutes);
