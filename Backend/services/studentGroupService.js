@@ -175,4 +175,21 @@ const updateResearchTopicDetails = (req, res) => {
     });
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup, updateResearchTopicDetails};
+const evaluateStudentGroupByPanel = (req, res) => {
+    const filter = {id: req.params.id || 'inavlidId' };
+    const getPanelEvaluateFeedback = {
+        panelEvaluateFeedbacks: req.body.panelEvaluateFeedbacks
+    }
+    studentGroup.findOneAndUpdate(filter, getPanelEvaluateFeedback, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            error?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getPanelEvaluateFeedback));
+    });
+}
+
+export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup, updateResearchTopicDetails, evaluateStudentGroupByPanel};
