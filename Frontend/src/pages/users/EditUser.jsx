@@ -51,7 +51,6 @@ const EditUser = (props) =>{
                 margin="dense"
                 name="name"
                 label="Name"
-                type="email"
                 value={user.name || ''}
                 fullWidth
                 variant="standard"
@@ -73,7 +72,6 @@ const EditUser = (props) =>{
                 margin="dense"
                 name="phone"
                 label="Phone"
-                type="phone"
                 value={user.phone || ''}
                 fullWidth
                 variant="standard"
