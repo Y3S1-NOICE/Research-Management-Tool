@@ -202,7 +202,6 @@ export {
     allocateOrDeallocatePanels, 
     assignMarks, 
     fetchStudentGroup,
-    addResearchTopic,
     updateResearchTopicDetails,
     evaluateStudentGroupByPanel
 };
