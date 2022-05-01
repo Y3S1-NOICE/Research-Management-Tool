@@ -8,14 +8,7 @@ const messageSchema = new mongoose.Schema({
         },
         content: {
             type: String,
-            trim: true, 
             required: true,
-        },
-        pic: {
-            type: String,
-            required: false,
-            // default:
-            //   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
         },
         sender: {
             type: String, 
