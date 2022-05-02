@@ -41,44 +41,36 @@ const Login = () => {
     return (
         <>
             <Grid container
+                sx={{ boxShadow: 3 }}
                 spacing={0}
                 direction="column"
                 alignItems="center"
             >
-                <Box sx={{ boxShadow: 3 }} mt={5} alignItems="center" style={{ minHeight: '300px', minWidth: '300px' }} >
-                    <Grid container
-                        spacing={0}
-                        direction="column"
-                        alignItems="center"
-                    >
-                        <h1>Login</h1>
-                        <Grid item xs={12} md={12}>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                name="email"
-                                label="Email address"
-                                fullWidth
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={12}>
-                            <TextField
-                                autoFocus
-                                name="password"
-                                margin="dense"
-                                label="Password"
-                                fullWidth
-                                type="password"
-                                variant="outlined"
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Button onClick={handleSubmit}>Sign in</Button>
-                    </Grid>
-                </Box>
-
+                <h1>RMT App</h1>
+                <Grid item xs={12} md={12}>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        name="email"
+                        label="Email address"
+                        style={{ minWidth: '350px' }}
+                        variant="standard"
+                        onChange={handleChange}
+                    />
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <TextField
+                        autoFocus
+                        name="password"
+                        margin="dense"
+                        label="Password"
+                        style={{ minWidth: '350px' }}
+                        type="password"
+                        variant="standard"
+                        onChange={handleChange}
+                    />
+                </Grid>
+                <Button onClick={handleSubmit}>Sign in</Button>
             </Grid>
 
         </>

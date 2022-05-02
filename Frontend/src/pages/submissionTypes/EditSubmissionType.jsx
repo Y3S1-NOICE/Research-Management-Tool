@@ -5,13 +5,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { updateUser } from '../../api/usersApi';
+import Switch from '@mui/material/Switch';
 import { handleError } from '../../helper/helper';
 import { updateSubmissionType } from '../../api/submissionTypesApi';
 
 const EditSubmissionType = (props) =>{
     const [submissionType, setSubmissionType] = useState(props.submissionType);
-    const [checked, setChecked] = useState(submissionType.published)
+    const [checked, setChecked] = useState(!props.submissionType.published)
 
 
     const handleEditSubmission = () => {
@@ -44,7 +44,6 @@ const EditSubmissionType = (props) =>{
             case 'published': {
                 setChecked(!checked);
                 setSubmissionType({...submissionType, published: value});
-                console.log(checked)
                 break;
             }
             default: {}
@@ -54,7 +53,7 @@ const EditSubmissionType = (props) =>{
     return (
         <div>
         <Dialog open={true} onClose={() => props.setEditOpen(false)}>
-            <DialogTitle>Edit User</DialogTitle>
+            <DialogTitle>Edit Submission Type</DialogTitle>
             <DialogContent>
                 <TextField
                     autoFocus
@@ -68,6 +67,7 @@ const EditSubmissionType = (props) =>{
                 />
                 <TextField
                     autoFocus
+                    margin="dense"
                     name="folder"
                     label="Upload folder"
                     value={submissionType.folder}
@@ -85,8 +85,12 @@ const EditSubmissionType = (props) =>{
                     variant="standard"
                     onChange={handleChange}
                 />
-                <label>Is publish? </label>
-                <input type="checkbox" onChange={handleChange} value={submissionType.published} name="published" />
+                <br />
+                <br />
+                <span>Publish</span>
+                {submissionType.published ? 
+                <Switch value={checked} onChange={handleChange} size="small" name="published" defaultChecked/> :
+                <Switch value={checked} onChange={handleChange} size="small" name="published" /> }
             </DialogContent>
             <DialogActions>
             <Button onClick={() => props.setEditOpen(false)}>Cancel</Button>

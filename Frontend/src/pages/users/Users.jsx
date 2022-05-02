@@ -58,6 +58,7 @@ const Users = () => {
 
   return (
     <>
+    <h1>Users</h1>
       <FormControl >
         <InputLabel id="role-label">Role</InputLabel>
         <Select

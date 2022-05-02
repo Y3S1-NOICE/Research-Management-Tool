@@ -1,10 +1,8 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
 import { useState } from 'react';
-import { createSubmissionType } from '../../api/submissionTypesApi';
+import { createSubmissionType, fetchSubmissionTypes } from '../../api/submissionTypesApi';
+import Switch from '@mui/material/Switch';
 
 const CreateSubmissionType = () => {
     const [submissionType, setSubmissionType] = useState({});
@@ -12,7 +10,9 @@ const CreateSubmissionType = () => {
 
     const handleCreate = () => {
         createSubmissionType(submissionType)
-            .then(res => console.log(res));
+            .then(res => {
+                fetchSubmissionTypes();
+            });
     }
 
     const handleChange = (event) => {
@@ -42,6 +42,7 @@ const CreateSubmissionType = () => {
 
     return (
         <>
+        <h1>Create new Submission</h1>
             <TextField
                 autoFocus
                 margin="dense"
@@ -53,6 +54,7 @@ const CreateSubmissionType = () => {
             />
             <TextField
                 autoFocus
+                margin="dense"
                 name="folder"
                 label="Upload folder"
                 fullWidth
@@ -68,9 +70,12 @@ const CreateSubmissionType = () => {
                 variant="standard"
                 onChange={handleChange}
             />
-            <label>Is publish? </label>
-            <input type="checkbox" onChange={handleChange} value={checked} name="published" />
+            <br />
+            <br />
+            <span>Publish</span>
+            <Switch onChange={handleChange} value={checked} size="small" name="published" />
             <Button onClick={handleCreate}> Create</Button>
+            
         </>
     );
 }

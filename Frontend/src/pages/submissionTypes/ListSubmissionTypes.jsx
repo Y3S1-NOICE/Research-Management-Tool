@@ -2,6 +2,14 @@ import { useEffect, useState } from "react"
 import { deleteSubmissionType, fetchSubmissionTypes } from "../../api/submissionTypesApi";
 import { handleError } from "../../helper/helper";
 import EditSubmissionType from "./EditSubmissionType";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Button } from "@mui/material";
 
 const ListSubmissionTypes = () => {
     const [submissionTypes, setSubmissionTypes] = useState([]);
@@ -10,14 +18,14 @@ const ListSubmissionTypes = () => {
 
     useEffect(() => {
         handleFetchSubmissionTypes();
-    },[]);
+    }, []);
 
     const handleFetchSubmissionTypes = () => {
         fetchSubmissionTypes()
             .then(res => {
                 console.log(res)
-                res.data.isSuccessful ? 
-                    setSubmissionTypes(res.data.responseData) : 
+                res.data.isSuccessful ?
+                    setSubmissionTypes(res.data.responseData) :
                     handleError();
             })
             .catch(() => handleError());
@@ -26,7 +34,7 @@ const ListSubmissionTypes = () => {
     const handleDeleteSubmissionType = (id) => {
         deleteSubmissionType(`id=${id}`)
             .then((res) => {
-                res.data.isSuccessful ? 
+                res.data.isSuccessful ?
                     handleFetchSubmissionTypes() :
                     handleError()
             })
@@ -38,39 +46,47 @@ const ListSubmissionTypes = () => {
         setEditOpen(true);
     }
 
-    return(
+    return (
         <>
-            <table className="table">
-                <thead>
-                    <tr>
-                    <th scope="col">Submission Type</th>
-                    <th scope="col">Folder Name</th>
-                    <th scope="col">Visibilty</th>
-                    <th scope="col">Options</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {submissionTypes && submissionTypes.map((sub, index) => 
-                     <tr key={index}>
-                        <td>{sub.name}</td>
-                        <td>{sub.folder}</td>
-                        <td>{sub.published ? 'Published' : 'Hidden'}</td>
-                        <td>
-                            <button className="btn btn-primary" onClick={() => handleDeleteSubmissionType(sub._id)}>Delete</button>
-                            <button className="btn btn-primary" onClick={() => setEditingSubmissionType(sub)}>Edit</button>
-                        </td>
-                        </tr>
-                    )}
-                  
-                </tbody>
-                </table>
-                {editOpen && submissionType && 
-                    <EditSubmissionType 
-                        submissionType={submissionType}
-                        setEditOpen={setEditOpen}
-                        handleFetchSubmissionTypes={handleFetchSubmissionTypes}
-                    />
-                    }
+        <h1>Submission Types</h1>
+            <TableContainer >
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Submission Type</TableCell>
+                            <TableCell align="right">Folder</TableCell>
+                            <TableCell align="right">Visibilty</TableCell>
+                            <TableCell align="right">Options</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {submissionTypes && submissionTypes.map((sub, index) => (
+                            <TableRow
+                                key={index}
+                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                            >
+                                <TableCell component="th" scope="row">
+                                    {sub.name}
+                                </TableCell>
+                                <TableCell align="right">{sub.folder}</TableCell>
+                                <TableCell align="right">{sub.published ? 'Published' : 'Hidden'}</TableCell>
+                                <TableCell align="right">
+                                    <Button onClick={() => setEditingSubmissionType(sub)}>Edit</Button>
+                                    <Button onClick={() => handleDeleteSubmissionType(sub._id)}>Delete</Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            
+            {editOpen && submissionType &&
+                <EditSubmissionType
+                    submissionType={submissionType}
+                    setEditOpen={setEditOpen}
+                    handleFetchSubmissionTypes={handleFetchSubmissionTypes}
+                />
+            }
 
         </>
     )
