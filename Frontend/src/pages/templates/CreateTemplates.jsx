@@ -94,7 +94,6 @@ const CreateTemplates = () => {
             <br />
             <span>Publish</span>
             <Switch onChange={handleChange} value={checked} size="small" name="published" />
-
             <Button disabled={file ? false : true} onClick={handleUpload}>Upload</Button>
             
         </>

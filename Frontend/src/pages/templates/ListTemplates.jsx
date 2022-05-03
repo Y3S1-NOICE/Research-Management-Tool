@@ -24,7 +24,6 @@ const ListTemplates = () => {
     const handleFetchTemplates = () => {
         fetchTemplates()
             .then(res => {
-                console.log(res)
                 res.data.isSuccessful ?
                     setTemplates(res.data.responseData) :
                     handleError();

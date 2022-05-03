@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import NavBar from "../../components/navBar/Navbar";
 import Submissions from "../submissions/Submissions"
 import ListTemplates from "../templates/ListTemplates";
 

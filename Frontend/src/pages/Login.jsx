@@ -15,11 +15,14 @@ const Login = () => {
         login(credentials)
             .then(res => {
                 console.log(res)
-                res.data.isSuccessful ?
-                    localStorage.setItem('authentication', res.data.responseData.accessToken) :
+                if(res.data.isSuccessful) {
+                    localStorage.setItem('authentication', res.data.responseData.accessToken);
+                    window.location.href='/';
+                } else {
                     handleError();
+                }
             })
-            .catch(error => handleError('Authentication failed!'));
+            .catch(() => handleError());
 
     }
 

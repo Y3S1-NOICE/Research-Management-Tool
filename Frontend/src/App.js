@@ -7,6 +7,7 @@ import SubmissionTypes from "./pages/submissionTypes";
 import Submissions from "./pages/submissions/Submissions";
 import Home from "./pages/home/Home";
 import Templates from "./pages/templates";
+import ButtonAppBar from "./components/navBar/Navbar";
 
 
 const App = () =>{
@@ -17,9 +18,10 @@ const App = () =>{
           <Route path="/" element={<Home />} /> 
           <Route path="/login" element={<Login />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/users/register" element={<RegisterUser />} />
+          <Route path="/signup" element={<RegisterUser />} />
           <Route path="/submission-types/" element={<SubmissionTypes />} />
           <Route path="/templates/" element={<Templates />} />
+          />
         </Routes>
       </BrowserRouter>
     )
