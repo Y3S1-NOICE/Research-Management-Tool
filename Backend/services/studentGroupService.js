@@ -152,4 +152,56 @@ const fetchStudentGroup = (req, res) =>{
     })
 }
 
-export {registerStudentGroup, fetchAllStudentGroups, requestSupervisor, requestCoSupervisor, allocateOrDeallocatePanels, assignMarks, fetchStudentGroup};
+
+//Add and accept research topic
+const updateResearchTopicDetails = (req, res) =>{
+    const filter = {id: req.params.id || 'inavlidId' };
+    const getTopicDetails = {
+        researchTopic: {
+            topic: req.body.topic,
+            area: req.body.area,
+            supervisorIsAccepted: req.body.supervisorIsAccepted === "ACCEPTED" ? req.body.supervisorIsAccepted : "Not Accepted",
+            coSupervisorIsAccepted: req.body.supervisorIsAccepted === "ACCEPTED" ? req.body.coSupervisorIsAccepted : "Not Accepted"
+         }
+       }
+    studentGroup.findOneAndUpdate(filter, getTopicDetails, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            error?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getTopicDetails));
+    });
+}
+
+//evaluate group by panel
+const evaluateStudentGroupByPanel = (req, res) => {
+    const filter = {id: req.params.id || 'inavlidId' };
+    const getPanelEvaluateFeedback = {
+        panelEvaluateFeedbacks: req.body.panelEvaluateFeedbacks
+    }
+    studentGroup.findOneAndUpdate(filter, getPanelEvaluateFeedback, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+            error?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, getPanelEvaluateFeedback));
+    });
+}
+
+export {
+    registerStudentGroup, 
+    fetchAllStudentGroups, 
+    requestSupervisor, 
+    requestCoSupervisor, 
+    allocateOrDeallocatePanels, 
+    assignMarks, 
+    fetchStudentGroup,
+    updateResearchTopicDetails,
+    evaluateStudentGroupByPanel
+};

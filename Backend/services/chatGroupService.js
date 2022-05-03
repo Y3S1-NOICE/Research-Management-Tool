@@ -15,6 +15,26 @@ const createChatGroup = (req, res) =>{
     });
 }
 
+//send messages
+const sendMessages = (req, res) =>{
+    const filter = {id: req.params.id || 'inavlidId' };
+    const  getMessageData = {
+        id:req.body.id,
+        content: req.body.content,
+        sender:req.body.sender
+    }
+    chat.findOneAndUpdate(filter, {$push: {messages :  getMessageData}}, (error, chatDetails) =>{
+        error ?
+            res.status(http.BAD_REQUEST)
+                .json(jsonResponse(false, error, error._message)) :
+        !chatDetails?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.CHAT_NOT_FOUND)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true,  getMessageData))
+    })
+}
+
 //fetch chats
 const getAllChatGroups = (req, res) =>{
     chat.find((error, chat) =>{
@@ -77,6 +97,13 @@ const deleteChatGroup = (req, res) => {
     });       
 }
 
-export { createChatGroup, getAllChatGroups, getChatGroup, updateChatGroupDetails, deleteChatGroup };
+export { 
+    createChatGroup, 
+    getAllChatGroups, 
+    getChatGroup, 
+    updateChatGroupDetails, 
+    deleteChatGroup,
+    sendMessages
+};
 
 
