@@ -9,7 +9,7 @@ const root = createRoot(rootElement);
 root.render(
   <StrictMode>
     <Typography>
-    <App />
+      <App />
     </Typography>
   </StrictMode>
 );

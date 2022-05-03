@@ -11,7 +11,7 @@ export default function Submissions() {
     },[]);
 
     const handleFetchSubmissionTypes = () => {
-        fetchSubmissionTypes()
+        fetchSubmissionTypes('?published=true')
             .then(res => {
                 console.log(res)
                 res.data.isSuccessful ? 

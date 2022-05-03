@@ -22,12 +22,14 @@ export default function Uploader(props) {
         const formData = new FormData();
         formData.append("file", file);
         createSubmission(`folder=${folder}&type=${type}`, formData)
-            .then(res => console.log(res))
+            .then(res => {
+                console.log(res)
+            })
             .catch(err => console.log(err))
     }
 
   return (
-    <Box sx={{ maxWidth: 400 }}>
+    <Box  my={1} mx={1}>
       <Card variant="outlined">
         <React.Fragment>
             <CardContent>

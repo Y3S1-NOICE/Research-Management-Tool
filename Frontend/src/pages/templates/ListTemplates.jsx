@@ -1,78 +1,89 @@
 import { useEffect, useState } from "react"
-import { deleteSubmissionType, fetchSubmissionTypes } from "../../api/submissionTypesApi";
 import { handleError } from "../../helper/helper";
-import EditSubmissionType from "./EditSubmissionType";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Button } from "@mui/material";
+import { deleteTemplate, fetchTemplates } from "../../api/templateApi";
+import EditTemplate from "./EditTemplate";
+import { getSubmission } from "../../api/submissionsApi";
+import fileDownload from 'js-file-download'
 
-const ListSubmissionTypes = () => {
-    const [submissionTypes, setSubmissionTypes] = useState([]);
-    const [submissionType, setSubmissionType] = useState({});
+const ListTemplates = () => {
+    const [templates, setTemplates] = useState([]);
+    const [template, setTemplate] = useState({});
     const [editOpen, setEditOpen] = useState(false);
 
     useEffect(() => {
-        handleFetchSubmissionTypes();
+        handleFetchTemplates();
     }, []);
 
-    const handleFetchSubmissionTypes = () => {
-        fetchSubmissionTypes('')
+    const handleFetchTemplates = () => {
+        fetchTemplates()
             .then(res => {
                 console.log(res)
                 res.data.isSuccessful ?
-                    setSubmissionTypes(res.data.responseData) :
+                    setTemplates(res.data.responseData) :
                     handleError();
             })
             .catch(() => handleError());
     }
 
-    const handleDeleteSubmissionType = (id) => {
-        deleteSubmissionType(`id=${id}`)
+    const handleDeleteTemplate = (id) => {
+        deleteTemplate(id)
             .then((res) => {
                 res.data.isSuccessful ?
-                    handleFetchSubmissionTypes() :
+                    handleFetchTemplates() :
                     handleError()
             })
             .catch(() => handleError())
     }
 
-    const setEditingSubmissionType = (payload) => {
-        setSubmissionType(payload);
+    const setEditingTemplate = (payload) => {
+        setTemplate(payload);
         setEditOpen(true);
+    }
+
+    const handleDownloadTemplate = (temp) => {
+        getSubmission(temp.key)
+        .then((res) => {
+            fileDownload(res.data, `${temp.name}.pdf`)
+          })
     }
 
     return (
         <>
-        <h1>Submission Types</h1>
+        <h1>Templates</h1>
             <TableContainer >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Submission Type</TableCell>
-                            <TableCell align="right">Folder</TableCell>
+                            <TableCell>Template</TableCell>
+                            <TableCell align="right">Description</TableCell>
+                            <TableCell align="right">Upload Folder</TableCell>
                             <TableCell align="right">Visibilty</TableCell>
                             <TableCell align="right">Options</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {submissionTypes && submissionTypes.map((sub, index) => (
+                        {templates && templates.map((temp, index) => (
                             <TableRow
                                 key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {sub.name}
+                                    {temp.name}
                                 </TableCell>
-                                <TableCell align="right">{sub.folder}</TableCell>
-                                <TableCell align="right">{sub.published ? 'Published' : 'Hidden'}</TableCell>
+                                <TableCell align="right">{temp.description}</TableCell>
+                                <TableCell align="right">{temp.folder}</TableCell>
+                                <TableCell align="right">{temp.published ? 'Published' : 'Hidden'}</TableCell>
                                 <TableCell align="right">
-                                    <Button onClick={() => setEditingSubmissionType(sub)}>Edit</Button>
-                                    <Button onClick={() => handleDeleteSubmissionType(sub._id)}>Delete</Button>
+                                    <Button onClick={() => setEditingTemplate(temp)}>Edit</Button>
+                                    <Button onClick={() => handleDeleteTemplate(temp._id)}>Delete</Button>
+                                    <Button onClick={() => handleDownloadTemplate(temp)}>Download</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -80,11 +91,11 @@ const ListSubmissionTypes = () => {
                 </Table>
             </TableContainer>
             
-            {editOpen && submissionType &&
-                <EditSubmissionType
-                    submissionType={submissionType}
+            {editOpen && template &&
+                <EditTemplate
+                    template={template}
                     setEditOpen={setEditOpen}
-                    handleFetchSubmissionTypes={handleFetchSubmissionTypes}
+                    handleFetchTemplates={handleFetchTemplates}
                 />
             }
 
@@ -93,4 +104,4 @@ const ListSubmissionTypes = () => {
 
 }
 
-export default ListSubmissionTypes;
+export default ListTemplates;
