@@ -10,6 +10,9 @@ const templateSchema = new mongoose.Schema({
     description: {
         type: String, required: false
     },
+    key: {
+        type: String, required: true
+    },
     published: {
         type: Boolean, default: false
     }
