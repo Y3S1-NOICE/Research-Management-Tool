@@ -139,7 +139,10 @@ const assignMarks = (req, res) =>{
 
 //Fetch specific studentGroup
 const fetchStudentGroup = (req, res) =>{
-    const filter = {id: req.params.id || 'inavlidId' };
+    const filter = {};
+    const {id, studentsId} = req.query;
+    id && (filter.id = id); 
+    studentsId && (filter.studentsId = studentsId);
     studentGroup.findOne(filter, (error, groupDetails) =>{
         error ?
             res.status(http.BAD_REQUEST)

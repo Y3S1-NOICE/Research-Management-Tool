@@ -54,7 +54,7 @@ export default function NavBar() {
             {
                 role === STUDENT && 
                 <>
-                    <Button color="inherit" >My Group</Button>
+                    <Button color="inherit" onClick={() => window.location.href = '/studentgroup'}>My Group</Button>
                     <Button color="inherit" >Chat</Button>
                 </>
 
