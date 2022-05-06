@@ -8,6 +8,7 @@ import Submissions from "./pages/submissions/Submissions";
 import Home from "./pages/home/Home";
 import Templates from "./pages/templates";
 import ButtonAppBar from "./components/navBar/Navbar";
+import MyGroup from "./pages/studentGroup/MyGroup";
 
 
 const App = () =>{
@@ -21,7 +22,9 @@ const App = () =>{
           <Route path="/signup" element={<RegisterUser />} />
           <Route path="/submission-types/" element={<SubmissionTypes />} />
           <Route path="/templates/" element={<Templates />} />
-          />
+
+          <Route path="/studentgroup/" element={<MyGroup />} />
+
         </Routes>
       </BrowserRouter>
     )

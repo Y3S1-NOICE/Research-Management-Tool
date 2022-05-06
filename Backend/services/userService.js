@@ -5,12 +5,12 @@ import { errorMessage } from "../utils/errorMessages.js";
 
 const findUsers = (req, res) => {
     const filter = {};
-    const {id, name, role, interestArea} = req.query;
+    const {id, name, role, interestArea, email} = req.query;
         id && (filter.id = id); 
         name && (filter.name = name);
         role && (filter.role = role);
         interestArea && (filter.interestArea = interestArea);
-
+        email && (filter.email = email);
     user.find(filter, (error, users) => {
         error ? 
             res.status(http.SERVER_ERROR)
