@@ -9,6 +9,7 @@ import Home from "./pages/home/Home";
 import Templates from "./pages/templates";
 import ButtonAppBar from "./components/navBar/Navbar";
 import MyGroup from "./pages/studentGroup/MyGroup";
+import RegisterStudentGroup from "./pages/studentGroup/RegisterStudentGroup";
 
 
 const App = () =>{
@@ -24,6 +25,7 @@ const App = () =>{
           <Route path="/templates/" element={<Templates />} />
 
           <Route path="/studentgroup/" element={<MyGroup />} />
+          <Route path="/studentgroup/registration" element={<RegisterStudentGroup />} />
 
         </Routes>
       </BrowserRouter>

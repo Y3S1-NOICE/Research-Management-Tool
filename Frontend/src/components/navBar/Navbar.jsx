@@ -7,16 +7,31 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { getAuth, logout } from '../../helper/helper';
 import { roles } from "../../Util/utils";
+import { fetchStudentGroup } from '../../api/studentGroupApi';
 
 export default function NavBar() {
     const [role, setRole] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [group, setGroup] = useState(null);
     const { SUPERVISOR, STUDENT, PANEL_MEMBER, ADMIN } = roles;
 
     useEffect(() => {
         const auth = getAuth()
         console.log(auth)
         auth && setRole(auth.role);
-    });
+        auth && setUserId(auth.id);
+        checkGroup()
+    },[userId]);
+
+    const checkGroup = () =>{
+      fetchStudentGroup(`studentsId=${userId}`)
+      .then((res) =>{
+        setGroup(res.data.responseData);
+        
+      }).catch((error) =>{
+        console.error(error);
+      })
+    }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -52,10 +67,16 @@ export default function NavBar() {
 
             }
             {
-                role === STUDENT && 
+                role === STUDENT && group !== null ?
                 <>
                     <Button color="inherit" onClick={() => window.location.href = '/studentgroup'}>My Group</Button>
                     <Button color="inherit" >Chat</Button>
+                </>:
+                role === STUDENT && group === null ?
+                <>
+                    <Button color="inherit" onClick={() => window.location.href = '/studentgroup/registration'}>Register StudentGroup</Button>
+                </>:
+                <>
                 </>
 
             }
