@@ -29,9 +29,10 @@ const getAllPanels = ( req, res ) => {
 //fetch panel
 const getPanel = ( req, res ) => {
     const filter = {};
-    const {id, panelMembers} = req.query;
+    const {id, panelMembers, allocatedGroups} = req.query;
     id && (filter.id = id); 
     panelMembers && (filter.panelMembers = panelMembers);
+    allocatedGroups && (filter.allocatedGroups = allocatedGroups);
     panel.find(filter,(error, panelDetails) => {
         !panelDetails ?
             res.status(http.NOT_FOUND)
@@ -80,4 +81,34 @@ const deletePanel = (req, res) => {
                     .json(jsonResponse(true, deletedPanel));
     });       
 }
-export { createPanel, getAllPanels, updatePanel, deletePanel, getPanel };
+
+const addStudentGroups = (req, res) =>{
+    const filter = {id: req.params.id || 'inavlidId' };
+    const filterD = {allocatedGroups: req.body.allocatedGroups}
+    const action = req.body.action
+    const groupData = req.body.allocatedGroups
+    if(action === 'ALLOCATE'){
+        panel.findOneAndUpdate(filter, {$push: {allocatedGroups : groupData}}, (error, panelDetails) =>{
+            !panelDetails?
+                res.status(http.NOT_FOUND)
+                    .json(jsonResponse(false, errorMessage.PANEL_NOT_FOUND)) :
+                error ?
+                    res.status(http.BAD_REQUEST)
+                        .json(jsonResponse(false, error, error._message)):
+                    res.status(http.OK)
+                        .json(jsonResponse(true, groupData))
+        })
+    }else if(action === 'DEALLOCATE')
+    panel.findOneAndUpdate(filterD, {$pull: {allocatedGroups : groupData}}, (error, panelDetails) =>{
+        !panelDetails?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.PANEL_NOT_FOUND)) :
+            error ?
+                res.status(http.BAD_REQUEST)
+                    .json(jsonResponse(false, error, error._message)):
+                res.status(http.OK)
+                    .json(jsonResponse(true, groupData))
+    })
+}
+
+export { createPanel, getAllPanels, updatePanel, deletePanel, getPanel, addStudentGroups };

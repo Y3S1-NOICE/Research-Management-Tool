@@ -11,6 +11,7 @@ import ButtonAppBar from "./components/navBar/Navbar";
 import MyGroup from "./pages/studentGroup/MyGroup";
 import RegisterStudentGroup from "./pages/studentGroup/RegisterStudentGroup";
 import AllocatedStudentGroups from "./pages/studentGroup/AllocatedStudentGroups";
+import AllocatePanels from "./pages/studentGroup/AllocatePanels";
 
 
 const App = () =>{
@@ -28,6 +29,7 @@ const App = () =>{
           <Route path="/studentgroup/" element={<MyGroup />} />
           <Route path="/studentgroup/registration" element={<RegisterStudentGroup />} />
           <Route path="/panel/studentgroup" element={<AllocatedStudentGroups />} />
+          <Route path="/panels" element={<AllocatePanels/>} />
 
         </Routes>
       </BrowserRouter>
