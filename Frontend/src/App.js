@@ -10,6 +10,7 @@ import Templates from "./pages/templates";
 import ButtonAppBar from "./components/navBar/Navbar";
 import MyGroup from "./pages/studentGroup/MyGroup";
 import RegisterStudentGroup from "./pages/studentGroup/RegisterStudentGroup";
+import AllocatedStudentGroups from "./pages/studentGroup/AllocatedStudentGroups";
 
 
 const App = () =>{
@@ -26,6 +27,7 @@ const App = () =>{
 
           <Route path="/studentgroup/" element={<MyGroup />} />
           <Route path="/studentgroup/registration" element={<RegisterStudentGroup />} />
+          <Route path="/panel/studentgroup" element={<AllocatedStudentGroups />} />
 
         </Routes>
       </BrowserRouter>

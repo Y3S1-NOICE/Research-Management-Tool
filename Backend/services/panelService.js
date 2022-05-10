@@ -26,6 +26,24 @@ const getAllPanels = ( req, res ) => {
     })
 }
 
+//fetch panel
+const getPanel = ( req, res ) => {
+    const filter = {};
+    const {id, panelMembers} = req.query;
+    id && (filter.id = id); 
+    panelMembers && (filter.panelMembers = panelMembers);
+    panel.find(filter,(error, panelDetails) => {
+        !panelDetails ?
+            res.status(http.NOT_FOUND)
+                .json(jsonResponse(false, errorMessage.PANEL_NOT_FOUND)):
+            error ?
+                res.status(http.SERVER_ERROR)
+                    .json(jsonResponse(false, error, error._message)) :
+                res.status(http.OK)
+                    .json(jsonResponse(true, panelDetails));
+    })
+}
+
 //update panel
 const updatePanel = (req, res) => {
     const filter = { id: req.params.id || 'inavlidId' };
@@ -62,4 +80,4 @@ const deletePanel = (req, res) => {
                     .json(jsonResponse(true, deletedPanel));
     });       
 }
-export { createPanel, getAllPanels, updatePanel, deletePanel };
+export { createPanel, getAllPanels, updatePanel, deletePanel, getPanel };

@@ -32,6 +32,7 @@ export default function NavBar() {
         console.error(error);
       })
     }
+    
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -61,7 +62,7 @@ export default function NavBar() {
             {
                 role === PANEL_MEMBER && 
                 <>
-                    <Button color="inherit" >Groups</Button>
+                    <Button color="inherit"onClick={() => window.location.href = '/panel/studentgroup'} >Groups</Button>
                     <Button color="inherit" >My Panel</Button>
                 </>
 
