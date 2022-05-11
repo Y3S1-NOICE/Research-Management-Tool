@@ -76,7 +76,7 @@ const groupDetails = () =>{
     let id = getAuth().id;
     fetchStudentGroup(`studentsId=${id}`)
     .then((res) =>{
-        setGroup(res.data.responseData);
+        setGroup(res.data.responseData[0]);
 
     }).catch((err) =>{
         console.log(err);
