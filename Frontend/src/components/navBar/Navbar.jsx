@@ -57,6 +57,7 @@ export default function NavBar() {
                     <Button color="inherit" onClick={() => window.location.href='/panels'}>Groups</Button>
                     <Button color="inherit" onClick={() => window.location.href='/submission-types'}>Submissions</Button>
                     <Button color="inherit" onClick={() => window.location.href='/templates'}>Templates</Button>
+                    <Button color="inherit" onClick={() => window.location.href='/marking-schemes'}>Marking-Schemes</Button>
                 </>
             }
             {
