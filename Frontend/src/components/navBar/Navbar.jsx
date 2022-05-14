@@ -11,27 +11,23 @@ import { fetchStudentGroup } from '../../api/studentGroupApi';
 
 export default function NavBar() {
     const [role, setRole] = useState(null);
-    const [userId, setUserId] = useState(null);
-    const [group, setGroup] = useState(null);
+    // const [userId, setUserId] = useState(null);
+    const [group, setGroup] = useState([]);
     const { SUPERVISOR, STUDENT, PANEL_MEMBER, ADMIN } = roles;
 
     useEffect(() => {
         const auth = getAuth();
         auth && setRole(auth.role);
-        auth && setUserId(auth.id);
-        auth && checkGroup();
-    },[userId]);
+        getGroup();
+        console.log(group)
+    },[]);
 
-    const checkGroup = () =>{
-      fetchStudentGroup(`studentsId=${userId}`)
-      .then((res) =>{
-        setGroup(res.data.responseData);
-        
-      }).catch((error) =>{
-        console.error(error);
-      })
+    const getGroup = async() =>{
+      let userId = getAuth().id
+      const group = await fetchStudentGroup(`studentsId=${userId}`);
+      setGroup(group.data.responseData);
+      console.log(group.data.responseData)
     }
-    
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -51,7 +47,7 @@ export default function NavBar() {
             {
                 role === ADMIN && 
                 <>
-                    <Button color="inherit" >Panels</Button>
+                    <Button color="inherit" onClick={() => window.location.href='/panel-management'}>Panels</Button>
                     <Button color="inherit" onClick={() => window.location.href='/users'}>Users</Button>
                     <Button color="inherit" onClick={() => window.location.href='/panels'}>Groups</Button>
                     <Button color="inherit" onClick={() => window.location.href='/submission-types'}>Submissions</Button>
@@ -69,12 +65,12 @@ export default function NavBar() {
 
             }
             {
-                role === STUDENT && group !== null ?
+                role === STUDENT && group.length !== 0 ?
                 <>
                     <Button color="inherit" onClick={() => window.location.href = '/studentgroup'}>My Group</Button>
                     <Button color="inherit" >Chat</Button>
                 </>:
-                role === STUDENT && group === null ?
+                role === STUDENT && group.length === 0?
                 <>
                     <Button color="inherit" onClick={() => window.location.href = '/studentgroup/registration'}>Register StudentGroup</Button>
                 </>:

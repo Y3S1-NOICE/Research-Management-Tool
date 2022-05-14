@@ -31,7 +31,7 @@ const requestSupervisor = (req, res) =>{
     const filter = {id: req.params.id || 'inavlidId' };
     const getSupervisorData = {
         supervisorId: req.body.supervisorId,
-        status: "Topic Registered"
+        status: "Supervisor Pending"
     }
     studentGroup.findOneAndUpdate(filter, getSupervisorData, (error, updatedGroupDetails) =>{
         !updatedGroupDetails ?
@@ -48,10 +48,10 @@ const requestSupervisor = (req, res) =>{
 //Request coSupervisors
 const requestCoSupervisor = (req, res) =>{
     const filter = {id: req.params.id || 'inavlidId' };
-    const topicFilter = {id:req.params.id, status: "Topic Accepted"}
+    const topicFilter = {id:req.params.id, status: req.body.status }
     const coSupervisorData = {
         coSupervisorId: req.body.coSupervisorId,
-        status: "Co Supervisor Pending"
+        status: "Co-Supervisor Pending"
     }
     studentGroup.findOneAndUpdate(topicFilter, coSupervisorData, (error, groupDetails) =>{
         error ?
@@ -199,6 +199,25 @@ const evaluateStudentGroupByPanel = (req, res) => {
     });
 }
 
+//Supervisor, Co-Supervisor Accept Group or Reject Group method
+const acceptRejectGroup = (req, res) =>{
+    const filter = {id: req.params.id || 'invalidId'};
+    const supervisorResponse = {
+        status: req.body.status
+    }
+    studentGroup.findOneAndUpdate(filter, supervisorResponse, (error, updatedGroupDetails) =>{
+        !updatedGroupDetails ?
+        res.status(http.NOT_FOUND)
+            .json(jsonResponse(false, errorMessage.STUDENT_GROUP_NOT_FOUND)) :
+        error?
+            res.status(http.BAD_REQUEST)
+                .json(jsonResponse(false, error, error._message)) :
+            res.status(http.OK)
+                .json(jsonResponse(true, supervisorResponse));
+    });
+    
+}
+
 export {
     registerStudentGroup, 
     fetchAllStudentGroups, 
@@ -208,5 +227,6 @@ export {
     assignMarks, 
     fetchStudentGroup,
     updateResearchTopicDetails,
-    evaluateStudentGroupByPanel
+    evaluateStudentGroupByPanel,
+    acceptRejectGroup
 };
