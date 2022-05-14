@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchSubmissionTypes } from "../../api/submissionTypesApi";
 import Uploader from "../../components/cards/Uploader";
+import { handleError } from "../../helper/helper";
 
 
 export default function Submissions() {
@@ -11,14 +12,14 @@ export default function Submissions() {
     },[]);
 
     const handleFetchSubmissionTypes = () => {
-        fetchSubmissionTypes()
+        fetchSubmissionTypes('?published=true')
             .then(res => {
                 console.log(res)
                 res.data.isSuccessful ? 
                     setSubmissionTypes(res.data.responseData) : 
-                    handleError();
+                    handleError(res);
             })
-            .catch(() => handleError());
+            .catch((error) => handleError(error));
     }
 
     return (

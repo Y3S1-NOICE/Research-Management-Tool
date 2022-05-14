@@ -21,7 +21,7 @@ const ListSubmissionTypes = () => {
     }, []);
 
     const handleFetchSubmissionTypes = () => {
-        fetchSubmissionTypes()
+        fetchSubmissionTypes('')
             .then(res => {
                 console.log(res)
                 res.data.isSuccessful ?
