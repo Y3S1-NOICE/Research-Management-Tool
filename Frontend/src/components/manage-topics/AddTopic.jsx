@@ -77,7 +77,7 @@ const AddTopic = (props) =>{
             TransitionComponent={Transition}
             keepMounted
         >
-            <DialogTitle>Add Topic</DialogTitle>
+            <DialogTitle>Enter Topic Details</DialogTitle>
             <DialogContent>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     <Grid item xs={12}>
