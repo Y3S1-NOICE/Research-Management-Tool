@@ -20,6 +20,7 @@ import { fetchPanel } from '../../api/panelApi';
 import { getAuth } from '../../helper/helper';
 import { AssignMarksForm } from './AssignMarksForm';
 import ID from "nodejs-unique-numeric-id-generator";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function AllocatedStudentGroups() {
   let id = getAuth().id;
@@ -104,8 +105,33 @@ export default function AllocatedStudentGroups() {
     };
     assignMarks(groupId, evaluationObj)
     .then((res) =>{
-        console.log(res.data)
+      toast.success('Mark Allocation Successful!', {
+        position: "top-right",
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'white',
+          background: '#4BB543'
+        },
+        iconTheme: {
+          primary: 'green',
+          secondary: '#FFFAEE',
+        },
+      });
+      console.log(res.data)
     }).catch((err) =>{
+      toast.error('Mark Allocation Unsuccessful!', {
+        position: "top-right",
+        style: {
+          padding: '16px',
+          color: 'white',
+          background: '#FF0000'
+        },
+        iconTheme: {
+          primary: 'red',
+          secondary: '#FFFAEE',
+        },
+      });
         console.error(err);
     })
     setOpen(false);
@@ -134,6 +160,10 @@ export default function AllocatedStudentGroups() {
   return (
     <div>
       <br />
+      <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
       <Container maxWidth={"90%"}>
         <center>
           <Typography variant='h6'>

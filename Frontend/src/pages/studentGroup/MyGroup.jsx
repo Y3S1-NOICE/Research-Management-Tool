@@ -17,6 +17,7 @@ import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddIcon from '@mui/icons-material/Add';
+import toast, { Toaster } from 'react-hot-toast';
 
 import { findUsers } from "../../api/usersApi";
 import { getAuth } from '../../helper/helper.js';
@@ -34,6 +35,7 @@ const [rowsPerPage, setRowsPerPage] = React.useState(2);
 const [group, setGroup] = useState({})
 const [members, setMembers] = useState([]);
 const [evaluations, setEvaluations] = useState([]);
+const [search, setSearch] = useState("");
 
 const [researchTopicAddOpen, setResearchTopicAddOpen] = useState(false);
 
@@ -49,44 +51,71 @@ useEffect (() =>{
 
 const groupDetails = async() =>{
     let id = getAuth().id;
-    const res = await fetchStudentGroup(`studentsId=${id}`);
-    setGroup(res.data.responseData[0]);
+    console.log(id)
+    try{
+        const res = await fetchStudentGroup(`studentsId=${id}`);
+        setGroup(res.data.responseData[0]);
+        console.log(group)
+    }catch(error){
+        console.log(error)
+    } 
 }
 
 const getMembers = async() =>{
     let id = getAuth().id;
-    const res = await fetchStudentGroup(`studentsId=${id}`);
-    setMembers(res.data.responseData[0].studentsId);
-    console.log(res.data.responseData[0].studentsId)
+    try{
+        const res = await fetchStudentGroup(`studentsId=${id}`);
+        setMembers(res.data.responseData[0].studentsId);
+        console.log(res.data.responseData[0].studentsId)
+    }catch(error){
+        console.log(error)
+    }   
 }
 
 const getEvaluationData = async() =>{
     let id = getAuth().id;
-    const res = await fetchStudentGroup(`studentsId=${id}`);
-    setEvaluations(res.data.responseData[0].evaluation);
-    console.log(res.data.responseData[0].evaluation)
+    try{
+        const res = await fetchStudentGroup(`studentsId=${id}`);
+        setEvaluations(res.data.responseData[0].evaluation);
+        console.log(res.data.responseData[0].evaluation)
+    }catch(error){
+        console.log(error)
+    }
 }
 
 const getSupervisors = async() =>{
-    const res = await findUsers(`role=Supervisor`)
+    try{
+        const res = await findUsers(`role=Supervisor`)
         setSupervisors(res.data.responseData);
         console.log(res.data.responseData);
+    }catch(error) {
+        console.log(error)
+    }
+    
 }
 
 const getSupervisor = async() =>{
     if(group.supervisorId !== "Not Assigned" ){
         console.log(group.supervisorId)
-        const supervisor = await findUsers(`id=${group.supervisorId}`)
-        setSupervisorData(supervisor.data.responseData[0])
-        console.log(supervisor.data.responseData[0])
+        try{
+            const supervisor = await findUsers(`id=${group.supervisorId}`)
+            setSupervisorData(supervisor.data.responseData[0])
+            console.log(supervisor.data.responseData[0])
+        }catch(error){
+            console.log(error);
+        }
     }
 }
 
 const getCoSupervisor = async() =>{
     if(group.coSupervisorId !== "Not Assigned" ){
-        const coSupervisor = await findUsers(`id=${group.coSupervisorId}`)
-        setCoSupervisorData(coSupervisor.data.responseData[0])
-        console.log(coSupervisor.data.responseData[0])
+        try{
+            const coSupervisor = await findUsers(`id=${group.coSupervisorId}`)
+            setCoSupervisorData(coSupervisor.data.responseData[0])
+            console.log(coSupervisor.data.responseData[0])
+        }catch(error){
+            console.log(error);
+        }
     }
 }
 
@@ -103,8 +132,34 @@ const reqSupervisor = (groupId, supervisorId, type) =>{
     if(type === "supervisor"){
         requestSupervisor(groupId, {supervisorId})
         .then((res) =>{
+            groupDetails();
+            toast.success('Supervisor Requested!', {
+                position: "top-right",
+                style: {
+                  border: '1px solid #713200',
+                  padding: '16px',
+                  color: 'white',
+                  background: '#4BB543'
+                },
+                iconTheme: {
+                  primary: 'green',
+                  secondary: '#FFFAEE',
+                },
+            });
             console.log("supervisor");
         }).catch((err) =>{
+            toast.error('Supervisor Request Unsuccessful!', {
+                position: "top-right",
+                style: {
+                  padding: '16px',
+                  color: 'white',
+                  background: '#FF0000'
+                },
+                iconTheme: {
+                  primary: 'red',
+                  secondary: '#FFFAEE',
+                },
+            });
             console.log(err);
         })
     }else if(type === "co-supervisor"){
@@ -114,8 +169,34 @@ const reqSupervisor = (groupId, supervisorId, type) =>{
         }
         requestCoSupervisor(groupId, coSupervisor)
             .then((res) =>{
+                groupDetails();
+                toast.success('Co-Supervisor Requested!', {
+                    position: "top-right",
+                    style: {
+                      border: '1px solid #713200',
+                      padding: '16px',
+                      color: 'white',
+                      background: '#4BB543'
+                    },
+                    iconTheme: {
+                      primary: 'green',
+                      secondary: '#FFFAEE',
+                    },
+                });
                 console.log("co-supervisor");
             }).catch((err) =>{
+                toast.error('Co-Supervisor Request Unsuccessful!', {
+                    position: "top-right",
+                    style: {
+                      padding: '16px',
+                      color: 'white',
+                      background: '#FF0000'
+                    },
+                    iconTheme: {
+                      primary: 'red',
+                      secondary: '#FFFAEE',
+                    },
+                });
                 console.log(err);
             })
     }
@@ -133,11 +214,42 @@ const setAddTopic = (payload) => {
   return (
     <div>
         <br/>
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
         <Container maxWidth="90%">
             <Paper elevation= {2} style={{padding:10}}>
-                <Typography sx={{ color: 'text.secondary' }}>
-                           Group No : {group.id}
-                </Typography>
+                <center>
+                <Grid container rowSpacing={1}>
+                    <Grid item xs={12}>
+                        <Typography variant='h6'><b>
+                                    {
+                                        group?
+                                        `GROUP NO : ${group.id}`:
+                                        "GROUP NO : Not Assigned"
+                                    }
+                        </b></Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+
+                    </Grid>
+                    <Grid item xs={6}>
+                    <Paper elevation={3} style={{padding:20}} maxWidth={"50%"}>
+                        {
+                                group?
+                                <Typography><b>Group Status : </b> {group.status}</Typography>:
+                                <Typography><b>Group Status :</b> Loading Data....</Typography>
+                        }
+                        
+                    </Paper>
+                    </Grid>
+                    <Grid item xs={3}>
+                        
+                    </Grid>
+                </Grid>
+                </center>
+               
             </Paper><br/>
                 
             <Paper elevation ={2} style={{padding:1}}>
@@ -190,25 +302,37 @@ const setAddTopic = (payload) => {
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
                         {
-                            group.supervisorId === "Not Assigned"?
-                            "Supervisor Status: Not Assigned" :
-                            group.status === "Supervisor Rejected" ?
-                            "Supervisor Status: Rejected":
-                            group.status === "Supervisor Pending" ?
-                            "Supervisor Status: Pending" :
-                            group.status === "Supervisor Accepted" ?
-                            "Supervisor Status: Accepted" :
-                            group.supervisorId !== "Not Assigned"?
-                            "Supervisor Status: Assigned":
+                            group?
                             <>
-                            
+                            {
+                                group.supervisorId === "Not Assigned"?
+                                "Supervisor Status: Not Assigned" :
+                                group.status === "Supervisor Rejected" ?
+                                "Supervisor Status: Rejected":
+                                group.status === "Supervisor Pending" ?
+                                "Supervisor Status: Pending" :
+                                group.status === "Supervisor Accepted" ?
+                                "Supervisor Status: Accepted" :
+                                group.supervisorId !== "Not Assigned"?
+                                "Supervisor Status: Assigned":
+                                <>
+                                
+                                </>
+                            }
+                            </>:
+                            <>
+                             "Loading Data..."
                             </>
+                            
+                           
                         }
+                        
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Grid>
                             <Paper elevation={3} style={{padding:"20px", maxWidth:"100%"}} sx={{ display: 'grid'}}>
+
                                 <Typography><b>Supervisor ID:</b> {group.supervisorId}</Typography>
                                 {
                                     supervisorData?
@@ -225,12 +349,9 @@ const setAddTopic = (payload) => {
                             <Paper elevation={3} style={{padding:10}} sx={{ display: 'grid'}}>
                                 <center><h4>Request Supervisor</h4></center>
                                 <center>
-                                    <TextField label="Search" variant="standard"  />
-                                    <IconButton fontSize="small" aria-label="search" >
-                                        <SearchIcon />
-                                    </IconButton>
+                                    <TextField label="Search" variant="standard"  value={search} onChange={(e)=>{ setSearch(e.target.value)}} />
                                     <IconButton fontSize="small" aria-label="cancel" >
-                                        <CancelIcon />
+                                        <CancelIcon onClick={()=>setSearch(() => "")} />
                                     </IconButton>
                                 </center><br/>
                                 <TableContainer component={Paper}>
@@ -245,7 +366,13 @@ const setAddTopic = (payload) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                               supervisors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
+                                                supervisors.filter((row)=>{
+                                                    if(search === ""){
+                                                        return row
+                                                    }else if(row.interestArea.toLowerCase().includes(search.toLowerCase())){
+                                                        return row
+                                                    }
+                                                }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
                                                     <TableRow>
                                                         <TableCell >{row.id}</TableCell>
                                                         <TableCell >{row.name}</TableCell>
@@ -278,18 +405,27 @@ const setAddTopic = (payload) => {
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>Co Supervisor Details</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
                         {
-                            group.status === "Supervisor Accepted" && group.coSupervisorId === "Not Assigned" ?
-                            "Status: Eligible":
-                            group.status === "Co-Supervisor Pending" ?
-                            "Co-Supervisor Status: Pending" :
-                            group.status === "Co-Supervisor Accepted" ?
-                            "Co-Supervisor Status: Accepted":
-                            group.status === "Co-Supervisor Rejectd" ?
-                            "Co-Supervisor Status: Rejected":
-                            group.coSupervisorId === "Not Assigned" ?
-                            "Co-Supervisor Status: Not Assigned":
-                            <></>
+                            group ?
+                            <>
+                                {
+                                    group.status === "Supervisor Accepted" && group.coSupervisorId === "Not Assigned" ?
+                                    "Status: Eligible":
+                                    group.status === "Co-Supervisor Pending" ?
+                                    "Co-Supervisor Status: Pending" :
+                                    group.status === "Co-Supervisor Accepted" ?
+                                    "Co-Supervisor Status: Accepted":
+                                    group.status === "Co-Supervisor Rejected" ?
+                                    "Co-Supervisor Status: Rejected":
+                                    group.coSupervisorId === "Not Assigned" ?
+                                    "Co-Supervisor Status: Not Assigned":
+                                    <></>
+                                }
+                            </>:
+                            <>
+                                Loading Data .....
+                            </>
                         }
+                       
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -310,12 +446,9 @@ const setAddTopic = (payload) => {
                             <Paper elevation={3} style={{padding:10}} sx={{ display: 'grid'}}>
                                 <center><h4>Request Co-Supervisor</h4></center>
                                 <center>
-                                    <TextField label="Search" variant="standard"  />
-                                    <IconButton fontSize="small" aria-label="search" >
-                                        <SearchIcon />
-                                    </IconButton>
+                                <TextField label="Search" variant="standard"  value={search} onChange={(e)=>{ setSearch(e.target.value)}} />
                                     <IconButton fontSize="small" aria-label="cancel" >
-                                        <CancelIcon />
+                                        <CancelIcon onClick={()=>setSearch(() => "")} />
                                     </IconButton>
                                 </center><br/>
                                 <TableContainer component={Paper}>
@@ -330,7 +463,13 @@ const setAddTopic = (payload) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                supervisors.map((row) =>(
+                                                supervisors.filter((row)=>{
+                                                    if(search === ""){
+                                                        return row
+                                                    }else if(row.interestArea.toLowerCase().includes(search.toLowerCase())){
+                                                        return row
+                                                    }
+                                                }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
                                                     <TableRow>
                                                         <TableCell >{row.id}</TableCell>
                                                         <TableCell >{row.name}</TableCell>
@@ -358,9 +497,20 @@ const setAddTopic = (payload) => {
                                                             }
                                                         </TableCell>
                                                     </TableRow>
+                                                    
                                                 ))
                                             }
                                         </TableBody>
+                                        <TableRow>
+                                        <TablePagination
+                                            rowsPerPageOptions={[2, 3, 5]}
+                                            count={supervisors.length}
+                                            page={page}
+                                            onPageChange={handleChangePage}
+                                            rowsPerPage={rowsPerPage}
+                                            onRowsPerPageChange={handleChangeRowsPerPage}
+                                        />
+                                        </TableRow>
                                     </Table>
                                 </TableContainer>
                             </Paper>
