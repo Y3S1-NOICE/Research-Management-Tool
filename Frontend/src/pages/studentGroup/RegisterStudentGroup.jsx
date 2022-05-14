@@ -17,6 +17,7 @@ import ID from "nodejs-unique-numeric-id-generator";
 import { findUsers } from '../../api/usersApi';
 import { registerStudentGroup } from '../../api/studentGroupApi';
 import { getAuth } from '../../helper/helper';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function RegisterStudentGroup() {
     let id = getAuth().id;
@@ -72,14 +73,43 @@ export default function RegisterStudentGroup() {
         registerStudentGroup(selectObj)
         .then((res)=>{
             console.log(select);
+            toast.success('Group Registration Successful!', {
+                position: "top-right",
+                style: {
+                  border: '1px solid #713200',
+                  padding: '16px',
+                  color: 'white',
+                  background: '#4BB543'
+                },
+                iconTheme: {
+                  primary: 'green',
+                  secondary: '#FFFAEE',
+                },
+              });
             window.location.href = '/studentgroup'
         }).catch((err) =>{
+            toast.error('Group Registration Unsuccessful!', {
+                position: "top-right",
+                style: {
+                  padding: '16px',
+                  color: 'white',
+                  background: '#FF0000'
+                },
+                iconTheme: {
+                  primary: 'red',
+                  secondary: '#FFFAEE',
+                },
+              });
             console.error(err);
         })
     }
 
   return (
     <div>
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
         <Container maxWidth={"90%"}>
             <br />
             <Typography variant='h6'>

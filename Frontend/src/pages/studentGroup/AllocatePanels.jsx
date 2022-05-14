@@ -11,6 +11,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { red, yellow } from '@mui/material/colors';
 import { fetchAllPanels, addStudentGroups } from '../../api/panelApi';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function AllocatePanels() {
     const [groupData, setGroupData] = useState([]);
@@ -59,7 +60,32 @@ export default function AllocatePanels() {
                 allocateOrDeallocatePanels(groupId, panelObj)
                 .then((res) =>{
                     console.log(res.data)
+                    toast.success('Topic Evaluation Panel Allocation Successful!', {
+                        position: "top-right",
+                        style: {
+                          border: '1px solid #713200',
+                          padding: '16px',
+                          color: 'white',
+                          background: '#4BB543'
+                        },
+                        iconTheme: {
+                          primary: 'green',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                 }).catch((err) =>{
+                    toast.error('Topic Evaluation Panel Allocation Unsuccessful!', {
+                        position: "top-right",
+                        style: {
+                          padding: '16px',
+                          color: 'white',
+                          background: '#FF0000'
+                        },
+                        iconTheme: {
+                          primary: 'red',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.error(err);
                 })
                 addStudentGroups(id, groupObj)
@@ -81,8 +107,33 @@ export default function AllocatePanels() {
                 }
                 allocateOrDeallocatePanels(groupId, panelObj)
                 .then((res) =>{
+                    toast.success('Presentation Evaluation Panel Allocation Successful!', {
+                        position: "top-right",
+                        style: {
+                          border: '1px solid #713200',
+                          padding: '16px',
+                          color: 'white',
+                          background: '#4BB543'
+                        },
+                        iconTheme: {
+                          primary: 'green',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.log(res.data)
                 }).catch((err) =>{
+                    toast.error('Presentation Evaluation Panel Allocation Unsuccessful!', {
+                        position: "top-right",
+                        style: {
+                          padding: '16px',
+                          color: 'white',
+                          background: '#FF0000'
+                        },
+                        iconTheme: {
+                          primary: 'red',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.error(err);
                 })
                 addStudentGroups(id, groupObj)
@@ -104,8 +155,33 @@ export default function AllocatePanels() {
                 }
                 allocateOrDeallocatePanels(groupId, panelObj)
                 .then((res) =>{
+                    toast.success('Topic Evaluation Panel De-Allocation Successful!', {
+                        position: "top-right",
+                        style: {
+                          border: '1px solid #713200',
+                          padding: '16px',
+                          color: 'white',
+                          background: '#4BB543'
+                        },
+                        iconTheme: {
+                          primary: 'green',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.log(res.data)
                 }).catch((err) =>{
+                    toast.error('Topic Evaluation Panel De-Allocation Unsuccessful!', {
+                        position: "top-right",
+                        style: {
+                          padding: '16px',
+                          color: 'white',
+                          background: '#FF0000'
+                        },
+                        iconTheme: {
+                          primary: 'red',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.error(err);
                 })
                 addStudentGroups(groupId, groupObj)
@@ -127,8 +203,33 @@ export default function AllocatePanels() {
                 }
                 allocateOrDeallocatePanels(groupId, panelObj)
                 .then((res) =>{
+                    toast.success('Topic Evaluation Panel De-allocation Successful!', {
+                        position: "top-right",
+                        style: {
+                          border: '1px solid #713200',
+                          padding: '16px',
+                          color: 'white',
+                          background: '#4BB543'
+                        },
+                        iconTheme: {
+                          primary: 'green',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.log(res.data)
                 }).catch((err) =>{
+                    toast.error('Presentation Evaluation Panel De-Allocation Unsuccessful!', {
+                        position: "top-right",
+                        style: {
+                          padding: '16px',
+                          color: 'white',
+                          background: '#FF0000'
+                        },
+                        iconTheme: {
+                          primary: 'red',
+                          secondary: '#FFFAEE',
+                        },
+                    });
                     console.error(err);
                 })
                 addStudentGroups(groupId, groupObj)
@@ -165,6 +266,10 @@ export default function AllocatePanels() {
     };
   return (
     <div>
+        <Toaster
+            position="top-right"
+            reverseOrder={false}
+        />
         <Container maxWidth={"90%"}><br/>
             <Paper elevation={3} style={{padding:20}}>
                 <Typography variant='h6'>
