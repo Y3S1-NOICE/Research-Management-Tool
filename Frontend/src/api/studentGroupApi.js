@@ -12,6 +12,7 @@ export const assignMarks = (groupId, markObj) => axios.put(`/groups/${groupId}/e
 export const fetchStudentGroup = (queryParams) => axios.get(`/groups/details?${queryParams}`);
 export const updateResearchTopicDetails = (groupId, topicObj) => axios.put(`/groups/${groupId}/updateTopic`, topicObj);
 export const evaluateStudentGroupByPanel = (groupId, panelObj) => axios.put(`/groups/${groupId}/evaluateStudentGroup`, panelObj);
+export const acceptRejectGroup = (groupId, statusObj) => axios.put(`/groups/${groupId}/status`, statusObj);
 
 
 

@@ -5,7 +5,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Container, Grid, Paper, TablePagination } from '@mui/material';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -26,42 +25,66 @@ export default function MyGroup() {
 const [expanded, setExpanded] = React.useState(false);
 const [supervisors, setSupervisors] = useState([]);
 const [supervisorData, setSupervisorData] = useState({});
+const [coSupervisorData, setCoSupervisorData] = useState({});
 const [page, setPage] = React.useState(0);
 const [rowsPerPage, setRowsPerPage] = React.useState(2);
 
 const [group, setGroup] = useState({})
-
-useEffect (() =>{
-    function getSupervisors(){
-        let id = getAuth().id;
-        findUsers(`role=Supervisor`)
-        .then((res) =>{
-            setSupervisors(res.data.responseData);
-        }).catch((error) =>{
-            console.log(error);
-        })
-    }
-    getSupervisors();
-},[]);
-
-useEffect (() =>{
-    if(group.supervisorId !== "Not Assigned"){
-        function getSupervisorData(){
-            findUsers(`id=${group.supervisorId}`)
-            .then((res) =>{
-                setSupervisorData(res.data.responseData[0]);
-            }).catch((error) =>{
-                console.log(error);
-            })
-        }
-        getSupervisorData();
-    }
-}, []);
-
+const [members, setMembers] = useState([]);
+const [evaluations, setEvaluations] = useState([]);
 
 useEffect (() =>{
     groupDetails();
-},[])
+    getMembers();
+    getSupervisors();
+    getSupervisor();
+    getCoSupervisor();
+    getEvaluationData()
+    console.log(supervisorData)
+},[expanded]);
+
+const groupDetails = async() =>{
+    let id = getAuth().id;
+    const res = await fetchStudentGroup(`studentsId=${id}`);
+    setGroup(res.data.responseData[0]);
+}
+
+const getMembers = async() =>{
+    let id = getAuth().id;
+    const res = await fetchStudentGroup(`studentsId=${id}`);
+    setMembers(res.data.responseData[0].studentsId);
+    console.log(res.data.responseData[0].studentsId)
+}
+
+const getEvaluationData = async() =>{
+    let id = getAuth().id;
+    const res = await fetchStudentGroup(`studentsId=${id}`);
+    setEvaluations(res.data.responseData[0].evaluation);
+    console.log(res.data.responseData[0].evaluation)
+}
+
+const getSupervisors = async() =>{
+    const res = await findUsers(`role=Supervisor`)
+        setSupervisors(res.data.responseData);
+        console.log(res.data.responseData);
+}
+
+const getSupervisor = async() =>{
+    if(group.supervisorId !== "Not Assigned" ){
+        console.log(group.supervisorId)
+        const supervisor = await findUsers(`id=${group.supervisorId}`)
+        setSupervisorData(supervisor.data.responseData[0])
+        console.log(supervisor.data.responseData[0])
+    }
+}
+
+const getCoSupervisor = async() =>{
+    if(group.coSupervisorId !== "Not Assigned" ){
+        const coSupervisor = await findUsers(`id=${group.coSupervisorId}`)
+        setCoSupervisorData(coSupervisor.data.responseData[0])
+        console.log(coSupervisor.data.responseData[0])
+    }
+}
 
 const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -72,32 +95,26 @@ const handleChangeRowsPerPage = (event) => {
     setPage(0);
 };
 
-const groupDetails = () =>{
-    let id = getAuth().id;
-    fetchStudentGroup(`studentsId=${id}`)
-    .then((res) =>{
-        setGroup(res.data.responseData[0]);
-
-    }).catch((err) =>{
-        console.log(err);
-    })
-}
-
 const reqSupervisor = (groupId, supervisorId, type) =>{
-    type === "supervisor" ?
+    if(type === "supervisor"){
         requestSupervisor(groupId, {supervisorId})
         .then((res) =>{
             console.log("supervisor");
         }).catch((err) =>{
             console.log(err);
         })
-    :
-    requestCoSupervisor(groupId, supervisorId)
-        .then((res) =>{
-            console.log("cosupervisor");
-        }).catch((err) =>{
-            console.log(err);
-        })
+    }else if(type === "co-supervisor"){
+        let coSupervisor = {
+            coSupervisorId: supervisorId,
+            status:group.status
+        }
+        requestCoSupervisor(groupId, coSupervisor)
+            .then((res) =>{
+                console.log("co-supervisor");
+            }).catch((err) =>{
+                console.log(err);
+            })
+    }
 }
 
 const handleChange = (panel) => (event, isExpanded) => {
@@ -120,11 +137,15 @@ const handleChange = (panel) => (event, isExpanded) => {
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
                         Member Details
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>No of members : </Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>No of members : {members.length}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Members
+                        {
+                            members.map((row) =>(
+                                <Typography><b>Member ID:</b> {row}</Typography>
+                            ))
+                        }
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -147,20 +168,36 @@ const handleChange = (panel) => (event, isExpanded) => {
                         Supervisor Details
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                       Status:{group.status}
+                        {
+                            group.supervisorId === "Not Assigned"?
+                            "Supervisor Status: Not Assigned" :
+                            group.status === "Supervisor Rejected" ?
+                            "Supervisor Status: Rejected":
+                            group.status === "Supervisor Pending" ?
+                            "Supervisor Status: Pending" :
+                            group.status === "Supervisor Accepted" ?
+                            "Supervisor Status: Accepted" :
+                            group.supervisorId !== "Not Assigned"?
+                            "Supervisor Status: Assigned":
+                            <>
+                            
+                            </>
+                        }
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Grid>
                             <Paper elevation={3} style={{padding:"20px", maxWidth:"100%"}} sx={{ display: 'grid'}}>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Supervisor ID: </Typography>
-                                    {
-                                        group.supervisorId ?
-                                        <Typography>{group.supervisorId}</Typography>:
-                                        <Typography>Not Assigned</Typography>
-                                    }
-                                </Box>
+                                <Typography><b>Supervisor ID:</b> {group.supervisorId}</Typography>
+                                {
+                                    supervisorData?
+                                    <>
+                                        <Typography><b>Supervisor Name:</b> {supervisorData.name} </Typography>
+                                        <Typography><b>Interest Area:</b> {supervisorData.interestArea} </Typography>
+                                    </>:
+                                    <></>
+                                
+                                }
                             </Paper>
                         </Grid> <br/>
                         <Grid>
@@ -220,23 +257,32 @@ const handleChange = (panel) => (event, isExpanded) => {
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>Co Supervisor Details</Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
                         {
-                            group.status === "Topic Accepted" ?
+                            group.status === "Supervisor Accepted" && group.coSupervisorId === "Not Assigned" ?
                             "Status: Eligible":
-                            "Status: Ineligible"
+                            group.status === "Co-Supervisor Pending" ?
+                            "Co-Supervisor Status: Pending" :
+                            group.status === "Co-Supervisor Accepted" ?
+                            "Co-Supervisor Status: Accepted":
+                            group.status === "Co-Supervisor Rejectd" ?
+                            "Co-Supervisor Status: Rejected":
+                            group.coSupervisorId === "Not Assigned" ?
+                            "Co-Supervisor Status: Not Assigned":
+                            <></>
                         }
                     </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Grid>
                             <Paper elevation={3} style={{padding:"20px", maxWidth:"100%"}} sx={{ display: 'grid'}}>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Supervisor ID: </Typography>
-                                    {
-                                        group.coSupervisorId ?
-                                        <Typography>{group.coSupervisorId}</Typography>:
-                                        <Typography>Not Assigned</Typography>
-                                    }
-                                </Box>
+                                <Typography><b>Co-Supervisor ID: </b> {group.coSupervisorId}</Typography>
+                                {
+                                    coSupervisorData ?
+                                    <>
+                                    <Typography><b>Co-Supervisor Name:</b> {coSupervisorData.name} </Typography>
+                                    <Typography><b>Interest Area:</b> {coSupervisorData.interestArea} </Typography>
+                                </>:
+                                <></>
+                                }
                             </Paper>
                         </Grid> <br/>
                         <Grid item xs={8}>
@@ -270,12 +316,68 @@ const handleChange = (panel) => (event, isExpanded) => {
                                                         <TableCell >{row.interestArea}</TableCell>
                                                         
                                                         <TableCell>
-                                                        <Button variant="contained" 
-                                                            disabled={ group.status !== "Topic Accepted" } 
-                                                            onClick={()=> reqCoSupervisor(group.id, row.id, "coSupervisor")}>
-                                                            Request
-                                                        </Button>
+                                                            {
+                                                                group.status === "Supervisor Accepted" ?
+                                                                <>
+                                                                    <Button variant='contained'onClick={()=> reqSupervisor(group.id, row.id, "co-supervisor")}>
+                                                                        Request
+                                                                    </Button>
+                                                                </>:
+                                                                group.status === "Co-Supervisor Rejected" ?
+                                                                <>
+                                                                    <Button variant='contained'onClick={()=> reqSupervisor(group.id, row.id, "co-supervisor")}>
+                                                                        Request
+                                                                    </Button>
+                                                                </>:
+                                                                <>
+                                                                    <Button variant='contained' disabled>
+                                                                        Request
+                                                                    </Button>
+                                                                </>
+                                                            }
                                                         </TableCell>
+                                                    </TableRow>
+                                                ))
+                                            }
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </Paper>
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel4bh-content" id="panel4bh-header"  >
+                    <Typography sx={{ width: '33%', flexShrink: 0 }}>Evaluation Details</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>
+                       Evaluation Status: 
+                       {
+                           evaluations.length !== 0 ?
+                           " Evaluation Data Available!" :
+                           " Evaluation Data Unavailable!"
+                       }
+                    </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid item xs={8}>
+                            <Paper elevation={3} style={{padding:10}} sx={{ display: 'grid'}}>
+                                <center><h4>Evaluation Details</h4></center>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                        <TableHead>
+                                        <TableRow>
+                                            <TableCell>ID</TableCell>
+                                            <TableCell >EvaluationType</TableCell>
+                                            <TableCell >Marks</TableCell>
+                                        </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {
+                                                evaluations.map((row) =>(
+                                                    <TableRow>
+                                                        <TableCell >{row.id}</TableCell>
+                                                        <TableCell >{row.evaluationType}</TableCell>
+                                                        <TableCell >{row.marks}</TableCell>
                                                     </TableRow>
                                                 ))
                                             }

@@ -13,7 +13,7 @@ export default function ListMarkingSchemes() {
     const [markingSchemes, setMarkingSchemes] = useState([]);
     useEffect(() => {
         getMarkingSchemes();
-    });
+    },[]);
 
     const getMarkingSchemes = () => {
         fetchMarkingSchemes().

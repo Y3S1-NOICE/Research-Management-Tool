@@ -9,7 +9,8 @@ import {
     assignMarks, 
     fetchStudentGroup, 
     updateResearchTopicDetails, 
-    evaluateStudentGroupByPanel
+    evaluateStudentGroupByPanel,
+    acceptRejectGroup
 } from "../services/studentGroupService.js";
 import { roles } from "../utils/utilities.js";
 const { STUDENT, ADMIN, PANEL_MEMBER, SUPERVISOR } = roles;
@@ -25,4 +26,5 @@ router.put('/:id/evaluations', authorize(PANEL_MEMBER), assignMarks);
 router.get('/details/', authorize(STUDENT,ADMIN, PANEL_MEMBER, SUPERVISOR), fetchStudentGroup);
 router.put('/:id/updateTopic', authorize(ADMIN, STUDENT), updateResearchTopicDetails);
 router.put('/:id/evaluateStudentGroup', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR), evaluateStudentGroupByPanel);
+router.put('/:id/status', authorize(SUPERVISOR), acceptRejectGroup);
 export default router;
