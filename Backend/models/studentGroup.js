@@ -4,7 +4,9 @@ import evaluationSchema from "./evaluation.js";
 
 const studentGroupSchema = new mongoose.Schema({
     id: {
-        type: String, required: true, unique: true,
+        type: String, 
+        required: true, 
+        unique: true,
     },
     
     researchTopic: researchTopicSchema, //SubDoc reaserchTopic
@@ -12,23 +14,28 @@ const studentGroupSchema = new mongoose.Schema({
     studentsId: [String],
 
     supervisorId: {
-        type: String,
+        type: String, 
+        default:"Not Assigned",
     },
 
     coSupervisorId: {
         type: String,
+        default:"Not Assigned",
     },
 
     topicEvaluationPanelId: {
         type: String,
+        default:"Not Assigned",
     },
 
     presentationEvaluationPanelId: {
         type: String,
+        default:"Not Assigned",
     },
     
     status: {
         type: String,
+        default:"Topic Not Registered"
     },
     
     evaluation: [evaluationSchema],

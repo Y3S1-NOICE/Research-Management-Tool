@@ -4,7 +4,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Container, Grid, Paper } from '@mui/material';
+import { Container, Grid, Paper, TablePagination } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
@@ -25,16 +25,18 @@ import { fetchStudentGroup, requestCoSupervisor, requestSupervisor } from '../..
 export default function MyGroup() {
 const [expanded, setExpanded] = React.useState(false);
 const [supervisors, setSupervisors] = useState([]);
+const [supervisorData, setSupervisorData] = useState({});
+const [page, setPage] = React.useState(0);
+const [rowsPerPage, setRowsPerPage] = React.useState(2);
+
 const [group, setGroup] = useState({})
 
 useEffect (() =>{
     function getSupervisors(){
         let id = getAuth().id;
-        console.log(id);
         findUsers(`role=Supervisor`)
         .then((res) =>{
             setSupervisors(res.data.responseData);
-            console.log(res.data.responseData)
         }).catch((error) =>{
             console.log(error);
         })
@@ -43,15 +45,38 @@ useEffect (() =>{
 },[]);
 
 useEffect (() =>{
+    if(group.supervisorId !== "Not Assigned"){
+        function getSupervisorData(){
+            findUsers(`id=${group.supervisorId}`)
+            .then((res) =>{
+                setSupervisorData(res.data.responseData[0]);
+            }).catch((error) =>{
+                console.log(error);
+            })
+        }
+        getSupervisorData();
+    }
+}, []);
+
+
+useEffect (() =>{
     groupDetails();
 },[])
+
+const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+};
 
 const groupDetails = () =>{
     let id = getAuth().id;
     fetchStudentGroup(`studentsId=${id}`)
     .then((res) =>{
-        setGroup(res.data.responseData);
-        console.log(group.studentsId.length);
+        setGroup(res.data.responseData[0]);
 
     }).catch((err) =>{
         console.log(err);
@@ -62,14 +87,14 @@ const reqSupervisor = (groupId, supervisorId, type) =>{
     type === "supervisor" ?
         requestSupervisor(groupId, {supervisorId})
         .then((res) =>{
-            console.log(res.data);
+            console.log("supervisor");
         }).catch((err) =>{
             console.log(err);
         })
     :
     requestCoSupervisor(groupId, supervisorId)
         .then((res) =>{
-            console.log(res.data);
+            console.log("cosupervisor");
         }).catch((err) =>{
             console.log(err);
         })
@@ -95,7 +120,7 @@ const handleChange = (panel) => (event, isExpanded) => {
                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
                         Member Details
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>No of members : {group.studentsId.length}</Typography>
+                    <Typography sx={{ color: 'text.secondary' }}>No of members : </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
@@ -122,7 +147,6 @@ const handleChange = (panel) => (event, isExpanded) => {
                         Supervisor Details
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                        
                        Status:{group.status}
                     </Typography>
                     </AccordionSummary>
@@ -131,15 +155,11 @@ const handleChange = (panel) => (event, isExpanded) => {
                             <Paper elevation={3} style={{padding:"20px", maxWidth:"100%"}} sx={{ display: 'grid'}}>
                                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
                                     <Typography>Supervisor ID: </Typography>
-                                    <Typography>1</Typography>
-                                </Box>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Supervisor Name</Typography>
-                                    <Typography>1</Typography>
-                                </Box>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Interested Area</Typography>
-                                    <Typography>1</Typography>
+                                    {
+                                        group.supervisorId ?
+                                        <Typography>{group.supervisorId}</Typography>:
+                                        <Typography>Not Assigned</Typography>
+                                    }
                                 </Box>
                             </Paper>
                         </Grid> <br/>
@@ -167,18 +187,28 @@ const handleChange = (panel) => (event, isExpanded) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                supervisors.map((row) =>(
+                                               supervisors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
                                                     <TableRow>
                                                         <TableCell >{row.id}</TableCell>
                                                         <TableCell >{row.name}</TableCell>
                                                         <TableCell >{row.interestArea}</TableCell>
                                                         <TableCell >
-                                                            <Button variant="contained" onClick={()=> reqSupervisor(group.id, row.id)}>Request</Button>
+                                                            <Button variant="contained" onClick={()=> reqSupervisor(group.id, row.id, "supervisor")}>Request</Button>
                                                         </TableCell>
                                                     </TableRow>
                                                 ))
                                             }
                                         </TableBody>
+                                        <TableRow>
+                                        <TablePagination
+                                            rowsPerPageOptions={[2, 3, 5]}
+                                            count={supervisors.length}
+                                            page={page}
+                                            onPageChange={handleChangePage}
+                                            rowsPerPage={rowsPerPage}
+                                            onRowsPerPageChange={handleChangeRowsPerPage}
+                                        />
+                                        </TableRow>
                                     </Table>
                                 </TableContainer>
                             </Paper>
@@ -201,15 +231,11 @@ const handleChange = (panel) => (event, isExpanded) => {
                             <Paper elevation={3} style={{padding:"20px", maxWidth:"100%"}} sx={{ display: 'grid'}}>
                                 <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
                                     <Typography>Supervisor ID: </Typography>
-                                    <Typography>1</Typography>
-                                </Box>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Supervisor Name</Typography>
-                                    <Typography>1</Typography>
-                                </Box>
-                                <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', align:'left'}}>
-                                    <Typography>Interested Area</Typography>
-                                    <Typography>1</Typography>
+                                    {
+                                        group.coSupervisorId ?
+                                        <Typography>{group.coSupervisorId}</Typography>:
+                                        <Typography>Not Assigned</Typography>
+                                    }
                                 </Box>
                             </Paper>
                         </Grid> <br/>

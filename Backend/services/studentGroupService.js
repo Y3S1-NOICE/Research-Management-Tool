@@ -140,10 +140,12 @@ const assignMarks = (req, res) =>{
 //Fetch specific studentGroup
 const fetchStudentGroup = (req, res) =>{
     const filter = {};
-    const {id, studentsId} = req.query;
+    const {id, studentsId, topicEvaluationPanelId, presentationEvaluationPanelId} = req.query;
     id && (filter.id = id); 
     studentsId && (filter.studentsId = studentsId);
-    studentGroup.findOne(filter, (error, groupDetails) =>{
+    topicEvaluationPanelId && (filter.topicEvaluationPanelId = topicEvaluationPanelId);
+    presentationEvaluationPanelId && (filter.presentationEvaluationPanelId = presentationEvaluationPanelId);
+    studentGroup.find(filter, (error, groupDetails) =>{
         error ?
             res.status(http.BAD_REQUEST)
                 .json(jsonResponse(false, error, error._message)) :
