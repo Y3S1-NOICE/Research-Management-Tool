@@ -10,7 +10,7 @@ const { STUDENT, PANEL_MEMBER, SUPERVISOR } = roles;
 const router = express.Router();
 
 router.put('/',upload.single('file'), uploadFile);
-router.get('/', authorize(PANEL_MEMBER, SUPERVISOR), getFilesList);
+router.get('/',  getFilesList);
 router.get('/:folder/:type/:key', getFile);
 router.delete('/:folder/:type/:key', authorize(STUDENT), deleteFile);
 
