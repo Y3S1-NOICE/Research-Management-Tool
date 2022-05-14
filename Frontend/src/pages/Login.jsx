@@ -2,8 +2,7 @@ import { useState } from "react";
 import { login } from "../api/authApi";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { handleError } from "../helper/helper";
-import Box from '@mui/material/Box';
+import { handleToast } from "../helper/helper";
 import Grid from '@mui/material/Grid';
 
 
@@ -15,15 +14,14 @@ const Login = () => {
         login(credentials)
             .then(res => {
                 console.log(res)
-                if(res.data.isSuccessful) {
+                if (res.data.isSuccessful) {
                     localStorage.setItem('authentication', res.data.responseData.accessToken);
-                    window.location.href='/';
+                    window.location.href = '/';
                 } else {
-                    handleError();
+                    handleToast('Login failed!', 'info');
                 }
             })
-            .catch(() => handleError());
-
+            .catch(() => handleToast('Login failed! Please try again', 'info'));
     }
 
     const handleChange = (event) => {
@@ -43,39 +41,39 @@ const Login = () => {
 
     return (
         <>
-            <Grid container
-                sx={{ boxShadow: 3 }}
-                spacing={0}
-                direction="column"
-                alignItems="center"
+            <Grid container my={2}
+                direction="row"
             >
-                <h1>RMT App</h1>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={0} md={4}></Grid>
+                <Grid item sx={{ boxShadow: 1 }} px={3} py={3} xs={12} md={4}>
+                    <center>
+                        <h1>Login</h1>
+                    </center>
                     <TextField
                         autoFocus
                         margin="dense"
                         name="email"
                         label="Email address"
-                        style={{ minWidth: '350px' }}
+                        fullWidth
                         variant="standard"
                         onChange={handleChange}
                     />
-                </Grid>
-                <Grid item xs={12} md={12}>
                     <TextField
                         autoFocus
                         name="password"
                         margin="dense"
                         label="Password"
-                        style={{ minWidth: '350px' }}
                         type="password"
+                        fullWidth
                         variant="standard"
                         onChange={handleChange}
                     />
+                    <center>
+                        <Button onClick={handleSubmit}>Sign in</Button>
+                    </center>
                 </Grid>
-                <Button onClick={handleSubmit}>Sign in</Button>
+                <Grid item xs={0} md={4}></Grid>
             </Grid>
-
         </>
     );
 }

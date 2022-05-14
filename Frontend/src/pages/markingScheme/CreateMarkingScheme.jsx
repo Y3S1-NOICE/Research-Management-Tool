@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Switch from '@mui/material/Switch';
 import { createMarkingScheme } from '../../api/markingSchemeApi';
-import { handleError } from '../../helper/helper';
+import { handleToast } from '../../helper/helper';
 import ListMarkingSchemes from "./ListMarkingSchemes";
 
 const CreateMarkingScheme = () => {
@@ -16,10 +16,9 @@ const CreateMarkingScheme = () => {
         markigScheme.markingAllocations = mAllocations;
         createMarkingScheme(markigScheme)
             .then(res => {
-                res.data && !res.data.isSuccessful && handleError()
+                res.data && !res.data.isSuccessful && handleToast()
             })
-            .catch(() => handleError())
-        console.log(markigScheme)
+            .catch(() => handleToast())
     }
 
     const handleRemoveFields = (index) => {

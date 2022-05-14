@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Switch from '@mui/material/Switch';
-import { handleError } from '../../helper/helper';
+import { handleToast } from '../../helper/helper';
 import { updateSubmissionType } from '../../api/submissionTypesApi';
 
 const EditSubmissionType = (props) =>{
@@ -19,10 +19,10 @@ const EditSubmissionType = (props) =>{
             .then((res) => {
                 res.data.isSuccessful ? 
                 props.handleFetchSubmissionTypes() :
-                handleError()
+                handleToast()
                 props.setEditOpen(false)
             })
-            .catch(() => handleError());
+            .catch(() => handleToast());
     }
 
 

@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-axios.defaults.baseURL = process.env.BASE_URL || 'http://localhost:5000';
-axios.defaults.headers.common['authentication'] = localStorage.getItem('authentication');
+import axios from './axiosConfig';
 
 export const registerStudentGroup = (groupObj) => axios.post('/groups', groupObj);
 export const fetchAllStudentGroups = () => axios.get('/groups');
