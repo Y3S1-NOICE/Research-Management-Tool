@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { Button } from "@mui/material";
 import CreatePanel from '../components/manage-panels/createPanel';
+import EditPanel from '../components/manage-panels/editPanel';
 
 const PanelManagement = () => {
   const [panels, setPanels] = useState([]);
@@ -109,10 +110,10 @@ const PanelManagement = () => {
   return (
     <>
     <Toaster/>
-    <h1>Panels</h1>
-    <Button startIcon={<AddIcon />} variant="outlined" onClick={() => setAddPanel(panel)} style={{float:"right"}}>Create</Button>
+    <h1 style={{marginLeft:"50px"}}>Panels</h1>
+    <hr style={{marginLeft:"50px"}}/>
         <center>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} style={{width:"1400px"}}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -120,6 +121,7 @@ const PanelManagement = () => {
               <TableCell align="left"><b>Panel ID</b></TableCell>
               <TableCell align="center"><b>Panel Members</b></TableCell>
               <TableCell align="center"><b>Allocated Groups</b></TableCell>
+              <TableCell align="center"><b><Button startIcon={<AddIcon />} variant="outlined" onClick={() => setAddPanel(panel)} style={{float:"right"}}>Create</Button></b></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -131,14 +133,19 @@ const PanelManagement = () => {
                 {/* <TableCell component="th" scope="row">{reservation.id}</TableCell> */}
                 <TableCell component="th" scope="row" align="left">{panel.id}</TableCell>
                 <TableCell align="center">
-                    {panel.panelMembers}
+                    {PanelMemberDetails(panel)}
                 </TableCell>
-                <TableCell align="center">{panel.allocatedGroups}</TableCell>
-                <TableCell align="right">
+                <TableCell align="center">{AllocatedGroupDetails(panel)}</TableCell>
+                <TableCell align="center">
                   <Stack direction="row" spacing={1}>
+                    {/* <IconButton aria-label="fingerprint" style={{color:"black"}} onClick={() => setEditingPanel(panel)}>
+                        <EditIcon />
+                    </IconButton>
                     <IconButton aria-label="delete" style={{color:"#FF0000"}} onClick={() => handleDeletePanel(panel.id)}>
                         <DeleteIcon />
-                    </IconButton>
+                    </IconButton> */}
+                    <Button onClick={() => setEditingPanel(panel)}>Edit</Button>
+                    <Button onClick={() => handleDeletePanel(panel.id)}>Delete</Button>
                   </Stack>
                 </TableCell>
               </TableRow>
@@ -159,19 +166,32 @@ const PanelManagement = () => {
         </center>
       {addOpen && (
             <CreatePanel
-            setAddOpen={setAddOpen}
+              setAddOpen={setAddOpen}
             />
         )
       }
-      {/* {editOpen && reservation &&
-        <MakeReservation
-          reservation={reservation}
+      {editOpen && panel &&
+        <EditPanel
+          panel={panel}
+          panelId={panel.id}
+          panelMembers={panel.panelMembers}
+          panelGroups={panel.allocatedGroups}
           setEditOpen={setEditOpen}
-          handleGetReservations={handleGetReservations}
+          handleGetPanels={handleGetPanels}
         />
-      } */}
+      }
     </>
   )
+}
+
+const PanelMemberDetails = (panel) => {
+  let panelDetail = (panel.panelMembers? panel.panelMembers + "\n" : "");
+  return panelDetail && panelDetail.length > 1 ? panelDetail.substring(0 , panelDetail.length - 1) : panelDetail;
+}
+
+const AllocatedGroupDetails = (panel) => {
+  let groupDetail = (panel.allocatedGroups? panel.allocatedGroups + "\n" : "");
+  return groupDetail && groupDetail.length > 1 ? groupDetail.substring(0 , groupDetail.length - 1) : groupDetail;
 }
 
 export default PanelManagement;

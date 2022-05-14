@@ -13,7 +13,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { createPanel } from '../../api/panelApi';
+import { updatePanel } from '../../api/panelApi';
 import { fetchAllStudentGroups } from '../../api/studentGroupApi';
 import Box from '@mui/material/Box';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -46,13 +46,13 @@ function getStyles(name, allocatedGroups, theme) {
     };
   }
 
-const CreatePanel = (props) => {
-    const [panel, setPanel] = useState({});
+const EditPanel = (props) => {
+    const [panel, setPanel] = useState(props.panel);
     const [panelMembersList, setPanelmembersList] = useState([]);
     const [studentGroups, setStudentGroups] = useState([]);
     const theme = useTheme();
-    const [panelMembers, setPanelMembers] = React.useState([]);
-    const [allocatedGroups, setAllocatedGroups] = React.useState([]);
+    const [panelMembers, setPanelMembers] = React.useState(props.panelMembers);
+    const [allocatedGroups, setAllocatedGroups] = React.useState(props.panelGroups);
 
     useEffect(() =>{
         handleGetStudentGroups();
@@ -84,11 +84,12 @@ const CreatePanel = (props) => {
             panelMembers: panelMembers,
             allocatedGroups: allocatedGroups
         }
-        createPanel(panelObj)
+        updatePanel(panel.id, panelObj)
         .then(res => {
+            props.handleGetPanels();
             console.error(res.data);
             console.log(panelObj);
-            props.setAddOpen(false);
+            props.setEditOpen(false);
             toast.success('Successfully Created!', {
                 position: "top-right",
                 style: {
@@ -156,7 +157,7 @@ const CreatePanel = (props) => {
         <Toaster/>
         <Dialog 
             open={true} 
-            onClose={() => props.setAddOpen(false)}
+            onClose={() => props.setEditOpen(false)}
             TransitionComponent={Transition}
             keepMounted
         >
@@ -174,6 +175,7 @@ const CreatePanel = (props) => {
                             fullWidth
                             variant="standard"
                             onChange={handleChange}
+                            disabled={true}
                         />
                         <FormControl variant="standard" sx={{  width: '100%' }} style={{marginTop: "20px"}}>
                             <InputLabel id="demo-multiple-chip-label">Panel Members</InputLabel>
@@ -243,7 +245,7 @@ const CreatePanel = (props) => {
                 </Grid>
             </DialogContent>
             <DialogActions>
-            <Button onClick={() => props.setAddOpen(false)}>Cancel</Button>
+            <Button onClick={() => props.setEditOpen(false)}>Cancel</Button>
             <Button onClick={handleSubmit}>Save</Button>
             </DialogActions>
         </Dialog>
@@ -252,4 +254,4 @@ const CreatePanel = (props) => {
 }
 
 
-export default CreatePanel;
+export default EditPanel;

@@ -5,8 +5,7 @@ import messageSchema from "./message.js";
 const chatSchema = new mongoose.Schema({
         id: {
             type: String, 
-            required: true, 
-            unique: true,
+            required: true,
         },
         chatName: {
             type: String,
