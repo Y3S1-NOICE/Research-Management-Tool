@@ -48,7 +48,7 @@ export default function NavBar() {
             {
                 role === ADMIN && 
                 <>
-                    <Button color="inherit" >Panels</Button>
+                    <Button color="inherit" onClick={() => window.location.href='/panel-management'}>Panels</Button>
                     <Button color="inherit" onClick={() => window.location.href='/users'}>Users</Button>
                     <Button color="inherit" onClick={() => window.location.href='/panels'}>Groups</Button>
                     <Button color="inherit" onClick={() => window.location.href='/submission-types'}>Submissions</Button>
