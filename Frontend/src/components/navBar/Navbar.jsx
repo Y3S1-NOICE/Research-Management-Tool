@@ -83,7 +83,7 @@ export default function NavBar() {
                 <>
                     <Button color="inherit" >Groups</Button>
                     <Button color="inherit" >Chat</Button>
-                    <Button color="inherit" >Requests</Button>
+                    <Button color="inherit" onClick={() => window.location.href = '/manage-topics'}>Requests</Button>
                 </>
             }
           </Typography>
