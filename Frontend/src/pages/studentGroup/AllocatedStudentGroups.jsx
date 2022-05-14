@@ -29,10 +29,11 @@ export default function AllocatedStudentGroups() {
   const [groupId, setGroupId] = useState("");
   const [panelId, setPanelId] = useState(null);
   const [evaluation, setEvaluation] = useState([])
-  const [grp, setGrp] = useState("")
+  const [group, setGroup] = useState("")
   const [evaluationData, setEvaluationData] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(2);
+  const [topicData, setTopicData] = useState({})
 
   let groupData = [...groupDataT, ...groupDataP]
   const [open, setOpen] = React.useState(false);
@@ -82,7 +83,7 @@ export default function AllocatedStudentGroups() {
     })
     fetchStudentGroup(`id=${grpId}`)
     .then((res) =>{
-      setGrp(res.data.responseData[0])
+      setGroup(res.data.responseData[0])
       setEvaluation(res.data.responseData[0].evaluation)
       console.log(res.data.responseData[0].evaluation)
     }).catch((err) =>{
@@ -112,6 +113,13 @@ export default function AllocatedStudentGroups() {
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+    fetchStudentGroup(`id=${panel}`)
+    .then((res) =>{
+      setTopicData(res.data.responseData[0].researchTopic)
+      console.log(res.data.responseData[0].researchTopic)
+    }).catch((err) =>{
+      console.err(err);
+    })
   };
 
   const handleChangePage = (event, newPage) => {
@@ -144,22 +152,46 @@ export default function AllocatedStudentGroups() {
               </AccordionSummary>
               <AccordionDetails>
                 <Paper elevation={3} style={{padding:20}}>
-                  <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                  <Grid item xs={12}>
-                    <Typography align='center'><b>TOPIC DETAILS</b></Typography><br/>
-                  </Grid>
-                  <Grid item xs>
-                    <Typography align='center'><b>Topic: </b>Springboot</Typography>
-                  </Grid>
-                  <Divider orientation="vertical" flexItem></Divider>
-                  <Grid item xs >
-                    <Typography align='center'><b>Status: </b>Finalized Supervisors</Typography>
-                  </Grid>
-                  <Divider orientation="vertical" flexItem></Divider>
-                    <Grid item xs>
-                    <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
-                    </Grid>
-                  </Grid><br/>
+                  {
+                    topicData?
+                    <>
+                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                      <Grid item xs={12}>
+                        <Typography align='center'><b>TOPIC DETAILS</b></Typography><br/>
+                      </Grid>
+                      <Grid item xs>
+                        <Typography align='center'><b>Topic: </b> {topicData.topic}</Typography>
+                      </Grid>
+                      <Divider orientation="vertical" flexItem></Divider>
+                      <Grid item xs >
+                        <Typography align='center'><b>Status: </b> {row.status}</Typography>
+                      </Grid>
+                      <Divider orientation="vertical" flexItem></Divider>
+                        <Grid item xs>
+                        <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                        </Grid>
+                      </Grid><br/>
+                    </>:
+                    <>
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                      <Grid item xs={12}>
+                        <Typography align='center'><b>TOPIC DETAILS</b></Typography><br/>
+                      </Grid>
+                      <Grid item xs>
+                        <Typography align='center'><b>Topic: </b> Not Selected</Typography>
+                      </Grid>
+                      <Divider orientation="vertical" flexItem></Divider>
+                      <Grid item xs >
+                        <Typography align='center'><b>Status: </b> {row.status}</Typography>
+                      </Grid>
+                      <Divider orientation="vertical" flexItem></Divider>
+                        <Grid item xs>
+                        <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                        </Grid>
+                      </Grid><br/>
+                    </>
+                  }
+                 
                 </Paper>
               <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"lg"}>
                 <DialogTitle><b>EVALUATION DETAILS</b></DialogTitle>
@@ -167,7 +199,7 @@ export default function AllocatedStudentGroups() {
                   <DialogContentText>
                     This window will allow you to view and asign evaluation details relating to the specific group!
                   </DialogContentText><br/>
-                  <Typography><center><b>GROUP ID : {grp.id}</b></center></Typography><br/>
+                  <Typography><center><b>GROUP ID : {group.id}</b></center></Typography><br/>
                     <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                       <Grid item xs={6}>
                         <Paper evaluation={3} style={{padding:20}}>
