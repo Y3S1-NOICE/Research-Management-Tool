@@ -33,6 +33,7 @@ const [rowsPerPage, setRowsPerPage] = React.useState(2);
 const [group, setGroup] = useState({})
 const [members, setMembers] = useState([]);
 const [evaluations, setEvaluations] = useState([]);
+const [search, setSearch] = useState("");
 
 useEffect (() =>{
     groupDetails();
@@ -327,12 +328,9 @@ const handleChange = (panel) => (event, isExpanded) => {
                             <Paper elevation={3} style={{padding:10}} sx={{ display: 'grid'}}>
                                 <center><h4>Request Supervisor</h4></center>
                                 <center>
-                                    <TextField label="Search" variant="standard"  />
-                                    <IconButton fontSize="small" aria-label="search" >
-                                        <SearchIcon />
-                                    </IconButton>
+                                    <TextField label="Search" variant="standard"  value={search} onChange={(e)=>{ setSearch(e.target.value)}} />
                                     <IconButton fontSize="small" aria-label="cancel" >
-                                        <CancelIcon />
+                                        <CancelIcon onClick={()=>setSearch(() => "")} />
                                     </IconButton>
                                 </center><br/>
                                 <TableContainer component={Paper}>
@@ -347,7 +345,13 @@ const handleChange = (panel) => (event, isExpanded) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                               supervisors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
+                                                supervisors.filter((row)=>{
+                                                    if(search === ""){
+                                                        return row
+                                                    }else if(row.interestArea.toLowerCase().includes(search.toLowerCase())){
+                                                        return row
+                                                    }
+                                                }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
                                                     <TableRow>
                                                         <TableCell >{row.id}</TableCell>
                                                         <TableCell >{row.name}</TableCell>
@@ -421,12 +425,9 @@ const handleChange = (panel) => (event, isExpanded) => {
                             <Paper elevation={3} style={{padding:10}} sx={{ display: 'grid'}}>
                                 <center><h4>Request Co-Supervisor</h4></center>
                                 <center>
-                                    <TextField label="Search" variant="standard"  />
-                                    <IconButton fontSize="small" aria-label="search" >
-                                        <SearchIcon />
-                                    </IconButton>
+                                <TextField label="Search" variant="standard"  value={search} onChange={(e)=>{ setSearch(e.target.value)}} />
                                     <IconButton fontSize="small" aria-label="cancel" >
-                                        <CancelIcon />
+                                        <CancelIcon onClick={()=>setSearch(() => "")} />
                                     </IconButton>
                                 </center><br/>
                                 <TableContainer component={Paper}>
@@ -441,7 +442,13 @@ const handleChange = (panel) => (event, isExpanded) => {
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                supervisors.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
+                                                supervisors.filter((row)=>{
+                                                    if(search === ""){
+                                                        return row
+                                                    }else if(row.interestArea.toLowerCase().includes(search.toLowerCase())){
+                                                        return row
+                                                    }
+                                                }).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>(
                                                     <TableRow>
                                                         <TableCell >{row.id}</TableCell>
                                                         <TableCell >{row.name}</TableCell>
