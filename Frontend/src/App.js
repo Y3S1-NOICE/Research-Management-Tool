@@ -13,6 +13,9 @@ import RegisterStudentGroup from "./pages/studentGroup/RegisterStudentGroup";
 import AllocatedStudentGroups from "./pages/studentGroup/AllocatedStudentGroups";
 import AllocatePanels from "./pages/studentGroup/AllocatePanels";
 import PanelManagement from "./pages/panels";
+import CreateMarkingScheme from "./pages/markingScheme/CreateMarkingScheme";
+import ListMarkingSchemes from "./pages/markingScheme/ListMarkingSchemes";
+
 
 const App = () =>{
 
@@ -25,7 +28,7 @@ const App = () =>{
           <Route path="/signup" element={<RegisterUser />} />
           <Route path="/submission-types/" element={<SubmissionTypes />} />
           <Route path="/templates/" element={<Templates />} />
-
+          <Route path="/marking-schemes" element={<CreateMarkingScheme />} />
           <Route path="/studentgroup/" element={<MyGroup />} />
           <Route path="/studentgroup/registration" element={<RegisterStudentGroup />} />
           <Route path="/panel/studentgroup" element={<AllocatedStudentGroups />} />
