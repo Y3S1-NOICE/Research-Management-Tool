@@ -161,7 +161,7 @@ const EditPanel = (props) => {
             TransitionComponent={Transition}
             keepMounted
         >
-            <DialogTitle>Create Panel</DialogTitle>
+            <DialogTitle>Edit Panel</DialogTitle>
             <DialogContent>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     <Grid item xs={12}>

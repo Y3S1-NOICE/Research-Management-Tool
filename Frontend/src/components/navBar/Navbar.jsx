@@ -31,7 +31,7 @@ export default function NavBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{background:"#232B2B"}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -84,7 +84,7 @@ export default function NavBar() {
                     <Button color="inherit" onClick={() => window.location.href = '/submissions-list'} >Student Submissions</Button>
                     <Button color="inherit" >Groups</Button>
                     <Button color="inherit" >Chat</Button>
-                    <Button color="inherit" >Requests</Button>
+                    <Button color="inherit" onClick={() => window.location.href = '/manage-topics'}>Requests</Button>
                 </>
             }
           </Typography>

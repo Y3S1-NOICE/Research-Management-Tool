@@ -16,11 +16,13 @@ import TextField from '@mui/material/TextField';
 import { IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
+import AddIcon from '@mui/icons-material/Add';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { findUsers } from "../../api/usersApi";
 import { getAuth } from '../../helper/helper.js';
 import { fetchStudentGroup, requestCoSupervisor, requestSupervisor } from '../../api/studentGroupApi';
+import AddTopic from '../../components/manage-topics/AddTopic';
 
 export default function MyGroup() {
 const [expanded, setExpanded] = React.useState(false);
@@ -34,6 +36,8 @@ const [group, setGroup] = useState({})
 const [members, setMembers] = useState([]);
 const [evaluations, setEvaluations] = useState([]);
 const [search, setSearch] = useState("");
+
+const [researchTopicAddOpen, setResearchTopicAddOpen] = useState(false);
 
 useEffect (() =>{
     groupDetails();
@@ -202,6 +206,11 @@ const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
 };
 
+const setAddTopic = (payload) => {
+    setGroup(payload);
+    setResearchTopicAddOpen(true);
+}
+
   return (
     <div>
         <br/>
@@ -270,7 +279,19 @@ const handleChange = (panel) => (event, isExpanded) => {
                     </AccordionSummary>
                     <AccordionDetails>
                     <Typography>
-                        Topic details
+                        {group.researchTopic?.topic && group.researchTopic?.area ? 
+                            <>
+                                <b>Topic</b> - {group.researchTopic?.topic} <br/>
+                                <b>Area</b> - {group.researchTopic?.area}
+                                <Button onClick={() => setAddTopic(group)} style={{marginLeft:"100px"}}><span>Edit Topic</span></Button>
+                            </>
+                        :
+                            <>
+                                <span style={{fontSize:"11px"}}>Currently there is no requested Topic</span>
+                                <br/>
+                                <Button startIcon={<AddIcon />} variant="outlined" onClick={() => setAddTopic(group)}><span>Add Topic</span></Button>
+                            </>
+                        }
                     </Typography>
                     </AccordionDetails>
                 </Accordion>
@@ -539,6 +560,13 @@ const handleChange = (panel) => (event, isExpanded) => {
                     </AccordionDetails>
                 </Accordion>
             </Paper>
+            {researchTopicAddOpen && group &&
+                <AddTopic
+                    group={group}
+                    setResearchTopicAddOpen={setResearchTopicAddOpen}
+                    groupDetails={groupDetails}
+                />
+            }
         </Container>
     </div>
   )
