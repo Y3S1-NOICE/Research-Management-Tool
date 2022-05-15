@@ -32,7 +32,7 @@ app.use('/login', authRouter);
 app.use('/signup', userRouter);
 // This line(line 27) will authenticate every route/request below this line.
 //If you do not want to authenticate your request/route, add your route above this line as in line 23
-//app.use(authenticate);
+app.use(authenticate);
 
 app.use('/users', userRouter);
 app.use('/groups', studentGroupRouter);
