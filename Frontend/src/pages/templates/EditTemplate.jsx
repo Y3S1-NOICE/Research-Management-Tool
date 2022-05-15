@@ -6,25 +6,23 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Switch from '@mui/material/Switch';
-import { handleError } from '../../helper/helper';
+import { handleToast } from '../../helper/helper';
 import { editTemplates } from '../../api/templateApi';
 
 const EditTemplate = (props) =>{
     const [template, setTemplate] = useState(props.template);
     const [checked, setChecked] = useState(!props.template.published)
 
-
     const handleEditTemplate = () => {
         editTemplates(template._id, template)
             .then((res) => {
                 res.data.isSuccessful ? 
                     props.handleFetchTemplates() :
-                    props.handleError()
+                    props.handleToast()
                 props.setEditOpen(false)
             })
-            .catch(() => handleError());
+            .catch(() => handleToast());
     }
-
 
     const handleChange = (event) => {
         const {name, value} = event.target;

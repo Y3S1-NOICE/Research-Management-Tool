@@ -8,7 +8,7 @@ const { STUDENT, ADMIN } = roles;
 const router = express.Router();
 
 router.post('/', authorize(ADMIN), createMarkingScheme);
-router.get('/', authorize(ADMIN, STUDENT), findMarkingSchemes);
+router.get('/', findMarkingSchemes);
 router.put('/', authorize(ADMIN), updateMarkingScheme);
 router.delete('/', authorize(ADMIN), deleteMarkingScheme);
 

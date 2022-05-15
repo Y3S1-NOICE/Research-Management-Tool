@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-axios.defaults.baseURL = 'http://localhost:5000';
-axios.defaults.headers.common['authentication'] = localStorage.getItem('authentication');
+import axios from './axiosConfig';
 
 export const createSubmissionType = (payload) => axios.post('/submissiontypes', payload);
 export const fetchSubmissionTypes = (filter) => axios.get(`/submissiontypes${filter}`);

@@ -14,9 +14,9 @@ const SubmissionTypes = () => {
                     direction="row"
                 >
                     <Grid item xs={12} md={8} >
-                    <Box px={2} sx={{ boxShadow: 1 }} >
-                    <ListSubmissionTypes />
-                    </Box>
+                        <Box px={2} sx={{ boxShadow: 1 }} >
+                            <ListSubmissionTypes />
+                        </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Box px={2} sx={{ boxShadow: 1 }} >

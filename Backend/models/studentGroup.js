@@ -38,8 +38,7 @@ const studentGroupSchema = new mongoose.Schema({
         default:"Topic Not Registered"
     },
     
-    evaluation: [evaluationSchema],
-    required: false, //SubDoc evaluation
+    evaluation: [evaluationSchema],//SubDoc evaluation
 
     panelEvaluateFeedbacks: {
         type: String,

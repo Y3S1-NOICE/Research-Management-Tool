@@ -1,7 +1,4 @@
-import axios from 'axios';
-
-axios.defaults.baseURL = process.env.BASE_URL || 'http://localhost:5000';
-axios.defaults.headers.common['authentication'] = localStorage.getItem('authentication');
+import axios from './axiosConfig';
 
 export const registerStudentGroup = (groupObj) => axios.post('/groups', groupObj);
 export const fetchAllStudentGroups = () => axios.get('/groups');
@@ -12,6 +9,7 @@ export const assignMarks = (groupId, markObj) => axios.put(`/groups/${groupId}/e
 export const fetchStudentGroup = (queryParams) => axios.get(`/groups/details?${queryParams}`);
 export const updateResearchTopicDetails = (groupId, topicObj) => axios.put(`/groups/${groupId}/updateTopic`, topicObj);
 export const evaluateStudentGroupByPanel = (groupId, panelObj) => axios.put(`/groups/${groupId}/evaluateStudentGroup`, panelObj);
+export const acceptRejectGroup = (groupId, statusObj) => axios.put(`/groups/${groupId}/status`, statusObj);
 
 
 

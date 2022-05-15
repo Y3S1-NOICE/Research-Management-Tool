@@ -15,6 +15,7 @@ export default function Uploader(props) {
     const {type, folder} = props;
     const fileSelected = event => {
         const file = event.target.files[0]
+        file.originalname = 'haloo'
             setFile(file)
         }
 
