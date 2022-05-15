@@ -62,6 +62,28 @@ export default function ManageTopics() {
         setEditOpen(true);
     }
 
+    const SupervisorReqStatus = () => {
+        if(group.supervisorId !== "Not Assigned") {
+            return(
+                <>
+                    <span>Supervisor Request</span>
+                </>
+            )
+        }  else if(group.coSupervisorId !== "Not Assigned") {
+            return(
+                <>
+                    <span>Co-Supervisor Request</span>
+                </>
+            )
+        } else if(group.supervisorId && group.coSupervisorId !== "Not Assigned") {
+            return(
+                <>
+                    <span>Both Supervisor and Co-Supervisor Request</span>
+                </>
+            )
+        }
+    }
+
     return (
         <div>
             <center>
@@ -74,6 +96,7 @@ export default function ManageTopics() {
                             <TableCell align="center"><b>Topic</b></TableCell>
                             <TableCell align="center"><b>Area</b></TableCell>
                             <TableCell align="center"><b>Status</b></TableCell>
+                            <TableCell align="center"><b>Request Type</b></TableCell>
                             <TableCell align="center"></TableCell>
                             </TableRow>
                         </TableHead>
@@ -86,6 +109,27 @@ export default function ManageTopics() {
                                             <TableCell component="th" scope="row" align="center">{group.researchTopic.topic}</TableCell>
                                             <TableCell align="center">{group.researchTopic.area}</TableCell>
                                             <TableCell align="center">{group.status}</TableCell>
+                                            <TableCell align="center">
+                                                {
+                                                    group.supervisorId && group.coSupervisorId !== "Not Assigned" ? 
+                                                        <span>Both Supervisor and Co-Supervisor Request</span>
+                                                    :
+                                                    <>
+                                                        {
+                                                            group.supervisorId !== "Not Assigned" ? 
+                                                                <span>Supervisor Request</span>
+                                                            :
+                                                            <>
+                                                                {
+                                                                    group.coSupervisorId !== "Not Assigned" && (
+                                                                        <span>Co-Supervisor Request</span>
+                                                                    )
+                                                                }
+                                                            </>
+                                                        }
+                                                    </>
+                                                }
+                                            </TableCell>
                                             <TableCell align="center">
                                                 <Stack direction="row" spacing={1}>
                                                     <Button onClick={() => setEditingStatus(group)}>Update Status</Button>
