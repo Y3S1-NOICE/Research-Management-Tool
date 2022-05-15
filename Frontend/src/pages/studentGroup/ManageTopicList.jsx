@@ -62,28 +62,6 @@ export default function ManageTopics() {
         setEditOpen(true);
     }
 
-    const SupervisorReqStatus = () => {
-        if(group.supervisorId !== "Not Assigned") {
-            return(
-                <>
-                    <span>Supervisor Request</span>
-                </>
-            )
-        }  else if(group.coSupervisorId !== "Not Assigned") {
-            return(
-                <>
-                    <span>Co-Supervisor Request</span>
-                </>
-            )
-        } else if(group.supervisorId && group.coSupervisorId !== "Not Assigned") {
-            return(
-                <>
-                    <span>Both Supervisor and Co-Supervisor Request</span>
-                </>
-            )
-        }
-    }
-
     return (
         <div>
             <center>
