@@ -8,7 +8,7 @@ const { STUDENT, ADMIN } = roles;
 const router = express.Router();
 
 router.post('/', authorize(ADMIN), createTemplate);
-router.get('/', authorize(ADMIN, STUDENT), findTemplates);
+router.get('/', findTemplates);
 router.put('/', authorize(ADMIN), updateTemplate);
 router.delete('/', authorize(ADMIN), deleteTemplate);
 

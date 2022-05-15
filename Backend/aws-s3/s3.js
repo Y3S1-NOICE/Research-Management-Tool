@@ -20,7 +20,8 @@ const upload = (folder, file) => {
   const params = {
     Bucket: bucketName,
     Body: fileStream,
-    Key: folder+'/'+file.filename
+    Key: folder+'/'+file.originalname,
+    Etag: 'haloo'
   }
   return s3.upload(params).promise()
 }

@@ -29,6 +29,7 @@ app.use(cors({origin: '*'}));
 app.use(express.json());
 
 app.use('/login', authRouter);
+app.use('/signup', userRouter);
 // This line(line 27) will authenticate every route/request below this line.
 //If you do not want to authenticate your request/route, add your route above this line as in line 23
 app.use(authenticate);

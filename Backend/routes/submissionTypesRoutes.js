@@ -8,7 +8,7 @@ const { STUDENT, ADMIN } = roles;
 const router = express.Router();
 
 router.post('/', authorize(ADMIN), createSubmissionType);
-router.get('/', authorize(ADMIN, STUDENT), findSubmissionTypes);
+router.get('/', findSubmissionTypes);
 router.put('/', authorize(ADMIN), updateSubmissionType);
 router.delete('/', authorize(ADMIN), deleteSubmissionType);
 

@@ -6,6 +6,7 @@ import { createTemplate } from '../../api/templateApi';
 import Uploader from '../../components/cards/Uploader';
 import { createSubmission } from '../../api/submissionsApi';
 
+
 const CreateTemplates = () => {
     const [template, setTemplate] = useState({});
     const [checked, setChecked] = useState(true);

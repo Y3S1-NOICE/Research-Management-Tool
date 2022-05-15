@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getAuth, handleError } from "../../helper/helper";
+import { getAuth, handleToast } from "../../helper/helper";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,9 +30,9 @@ const ListTemplates = () => {
             .then(res => {
                 res.data.isSuccessful ?
                     setTemplates(res.data.responseData) :
-                    handleError();
+                    handleToast();
             })
-            .catch(() => handleError());
+            .catch(() => handleToast());
     }
 
     const handleDeleteTemplate = (id) => {
@@ -40,9 +40,9 @@ const ListTemplates = () => {
             .then((res) => {
                 res.data.isSuccessful ?
                     handleFetchTemplates() :
-                    handleError()
+                    handleToast()
             })
-            .catch(() => handleError())
+            .catch(() => handleToast())
     }
 
     const setEditingTemplate = (payload) => {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { deleteSubmissionType, fetchSubmissionTypes } from "../../api/submissionTypesApi";
-import { handleError } from "../../helper/helper";
+import { handleToast } from "../../helper/helper";
 import EditSubmissionType from "./EditSubmissionType";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,7 +8,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Button } from "@mui/material";
 
 const ListSubmissionTypes = () => {
@@ -26,9 +25,9 @@ const ListSubmissionTypes = () => {
                 console.log(res)
                 res.data.isSuccessful ?
                     setSubmissionTypes(res.data.responseData) :
-                    handleError();
+                    handleToast();
             })
-            .catch(() => handleError());
+            .catch(() => handleToast());
     }
 
     const handleDeleteSubmissionType = (id) => {
@@ -36,9 +35,9 @@ const ListSubmissionTypes = () => {
             .then((res) => {
                 res.data.isSuccessful ?
                     handleFetchSubmissionTypes() :
-                    handleError()
+                    handleToast()
             })
-            .catch(() => handleError())
+            .catch(() => handleToast())
     }
 
     const setEditingSubmissionType = (payload) => {

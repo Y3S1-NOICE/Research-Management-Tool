@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { updateUser } from '../../api/usersApi';
-import { handleError } from '../../helper/helper';
+import { handleToast } from '../../helper/helper';
 
 const EditUser = (props) =>{
     const [user, setUser] = useState(props.user);
@@ -14,12 +14,14 @@ const EditUser = (props) =>{
     const handleEditUser = () => {
         updateUser(user.id, user)
             .then((res) => {
-                res.data.isSuccessful ? 
-                props.handleFindUsers() :
-                handleError()
-                props.setEditOpen(false)
+                if (res.data.isSuccessful) {
+                    handleToast('User updated', 'info')
+                    props.handleFindUsers() 
+                } else {
+                    props.setEditOpen(false)
+                }  
             })
-            .catch(() => handleError());
+            .catch(() => handleToast());
     }
 
     const handleChange = (event) => {
