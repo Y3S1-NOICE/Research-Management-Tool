@@ -1,6 +1,7 @@
 import user from "../models/user.js";
 import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
+import jwt from "jsonwebtoken";
 import { errorMessage } from "../utils/errorMessages.js";
 
 const findUsers = (req, res) => {
@@ -23,11 +24,20 @@ const findUsers = (req, res) => {
 const registerUser = (req, res) => {
     const newUser = user(req.body);
     newUser.save((error) => {
-        error ? 
+        if(error) {
             res.status(http.BAD_REQUEST)
-                .json(jsonResponse(false, error, error._message)) :
+                .json(jsonResponse(false, error, error._message))
+        } else {
+            const { id, role, email } = req.body;
+            const authBody = { id, role, email };
+            const accessToken = jwt.sign(authBody, process.env.AUTH_SECRET);
+            let createdUser = {...newUser, accessToken };
+            createdUser = createdUser._doc;
+            createdUser.accessToken = accessToken;
             res.status(http.CREATED)
-                .json(jsonResponse(true, newUser));
+                .json(jsonResponse(true, createdUser));
+        }
+
     });
 }
 

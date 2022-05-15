@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import { useEffect, useState } from 'react';
 import { fetchMarkingSchemes } from '../../api/markingSchemeApi';
-import { handleError } from '../../helper/helper';
+import { handleToast } from '../../helper/helper';
 
 export default function ListMarkingSchemes() {
     const [markingSchemes, setMarkingSchemes] = useState([]);
@@ -21,10 +21,10 @@ export default function ListMarkingSchemes() {
                 if (res && res.data && res.data.isSuccessful) {
                     setMarkingSchemes(res.data.responseData);
                 } else {
-                    handleError();
+                    handleToast();
                 }
             })
-            .catch(() => handleError())
+            .catch(() => handleToast())
     }
 
     return (

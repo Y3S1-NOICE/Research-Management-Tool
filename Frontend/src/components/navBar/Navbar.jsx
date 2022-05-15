@@ -16,8 +16,7 @@ export default function NavBar() {
     const { SUPERVISOR, STUDENT, PANEL_MEMBER, ADMIN } = roles;
 
     useEffect(() => {
-        const auth = getAuth()
-        console.log(auth)
+        const auth = getAuth();
         auth && setRole(auth.role);
         getGroup();
         console.log(group)
@@ -59,7 +58,8 @@ export default function NavBar() {
             {
                 role === PANEL_MEMBER && 
                 <>
-                    <Button color="inherit"onClick={() => window.location.href = '/panel/studentgroup'} >Groups</Button>
+                    <Button color="inherit" onClick={() => window.location.href = '/panel/studentgroup'} >Groups</Button>
+                    <Button color="inherit" onClick={() => window.location.href = '/submissions-list'} >Student Submissions</Button>
                     <Button color="inherit" >My Panel</Button>
                 </>
 
@@ -81,6 +81,7 @@ export default function NavBar() {
             {
                 role === SUPERVISOR && 
                 <>
+                    <Button color="inherit" onClick={() => window.location.href = '/submissions-list'} >Student Submissions</Button>
                     <Button color="inherit" >Groups</Button>
                     <Button color="inherit" >Chat</Button>
                     <Button color="inherit" onClick={() => window.location.href = '/manage-topics'}>Requests</Button>

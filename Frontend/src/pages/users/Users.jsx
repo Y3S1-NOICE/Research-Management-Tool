@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { deleteUser, findUsers } from "../../api/usersApi";
-import { handleError } from "../../helper/helper";
+import { handleToast } from "../../helper/helper";
 import { roles } from "../../Util/utils";
 import EditUser from "./EditUser";
 import Table from '@mui/material/Table';
@@ -32,19 +32,22 @@ const Users = () => {
       .then(res => {
         res.data.isSuccessful ?
           setUsers(res.data.responseData) :
-          handleError();
+          handleToast();
       })
-      .catch(() => handleError());
+      .catch(() => handleToast());
   }
 
   const handleDeleteUser = (id) => {
     deleteUser(id)
       .then((res) => {
-        res.data.isSuccessful ?
-          handleFindUsers() :
-          handleError()
+        if(res.data.isSuccessful) {
+          handleFindUsers();
+          handleToast('User deleted!', 'info');
+        } else {
+          handleToast()
+        }
       })
-      .catch(() => handleError())
+      .catch(() => handleToast())
   }
 
   const handleRoleSelect = (event) => {

@@ -16,6 +16,7 @@ import PanelManagement from "./pages/panels";
 import CreateMarkingScheme from "./pages/markingScheme/CreateMarkingScheme";
 import ListMarkingSchemes from "./pages/markingScheme/ListMarkingSchemes";
 import ManageTopics from "./pages/studentGroup/ManageTopicList";
+import ListSubmissions from "./pages/submissions/ListSubmissions";
 
 
 const App = () =>{
@@ -36,8 +37,8 @@ const App = () =>{
           <Route path="/panels" element={<AllocatePanels/>} />
           <Route path="/manage-topics" element={<ManageTopics/>} />
 
+          <Route path="/submissions-list" element={<ListSubmissions/>} />
           <Route path="/panel-management" element={<PanelManagement/>} />
-
         </Routes>
       </BrowserRouter>
     )
