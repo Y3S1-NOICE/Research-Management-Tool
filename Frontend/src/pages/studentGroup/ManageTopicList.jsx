@@ -73,8 +73,8 @@ export default function ManageTopics() {
                             <TableCell align="left"><b>Group ID</b></TableCell>
                             <TableCell align="center"><b>Topic</b></TableCell>
                             <TableCell align="center"><b>Area</b></TableCell>
-                            <TableCell align="center"><b>Status</b></TableCell>
                             <TableCell align="center"><b>Request Type</b></TableCell>
+                            <TableCell align="center"><b>Status</b></TableCell>
                             <TableCell align="center"></TableCell>
                             </TableRow>
                         </TableHead>
@@ -86,7 +86,6 @@ export default function ManageTopics() {
                                             <TableCell component="th" scope="row" align="left">{group.id}</TableCell>
                                             <TableCell component="th" scope="row" align="center">{group.researchTopic.topic}</TableCell>
                                             <TableCell align="center">{group.researchTopic.area}</TableCell>
-                                            <TableCell align="center">{group.status}</TableCell>
                                             <TableCell align="center">
                                                 {
                                                     group.supervisorId && group.coSupervisorId !== "Not Assigned" ? 
@@ -108,6 +107,7 @@ export default function ManageTopics() {
                                                     </>
                                                 }
                                             </TableCell>
+                                            <TableCell align="center">{group.status}</TableCell>
                                             <TableCell align="center">
                                                 <Stack direction="row" spacing={1}>
                                                     <Button onClick={() => setEditingStatus(group)}>Update Status</Button>
