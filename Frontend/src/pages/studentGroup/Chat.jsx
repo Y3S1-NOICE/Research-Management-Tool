@@ -99,7 +99,7 @@ const MyChat = (props) => {
                 });
             })
             .catch(() => {
-                toast.error('Error', {
+                toast.error('Only Supervisor or Authorized roles can delete the chat!', {
                     position: "top-right",
                     style: {
                       padding: '16px',
