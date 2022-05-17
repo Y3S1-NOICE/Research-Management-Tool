@@ -17,6 +17,7 @@ import CreateMarkingScheme from "./pages/markingScheme/CreateMarkingScheme";
 import ListMarkingSchemes from "./pages/markingScheme/ListMarkingSchemes";
 import ManageTopics from "./pages/studentGroup/ManageTopicList";
 import ListSubmissions from "./pages/submissions/ListSubmissions";
+import MyChat from "./pages/studentGroup/Chat";
 
 
 const App = () =>{
@@ -39,6 +40,7 @@ const App = () =>{
 
           <Route path="/submissions-list" element={<ListSubmissions/>} />
           <Route path="/panel-management" element={<PanelManagement/>} />
+          <Route path="/chat" element={<MyChat/>} />
         </Routes>
       </BrowserRouter>
     )
