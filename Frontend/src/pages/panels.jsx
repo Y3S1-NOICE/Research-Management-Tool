@@ -17,6 +17,10 @@ import Stack from '@mui/material/Stack';
 import { Button } from "@mui/material";
 import CreatePanel from '../components/manage-panels/createPanel';
 import EditPanel from '../components/manage-panels/editPanel';
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import SearchIcon from '@mui/icons-material/Search';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const PanelManagement = () => {
   const [panels, setPanels] = useState([]);
@@ -26,6 +30,7 @@ const PanelManagement = () => {
   const [expanded, setExpanded] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchPanel, setSearchPanel] = useState("");
 
   useEffect(() => {
     handleGetPanels();
@@ -114,6 +119,7 @@ const PanelManagement = () => {
     <hr style={{marginLeft:"50px"}}/>
         <center>
         <TableContainer component={Paper} style={{width:"1400px"}}>
+        <Button startIcon={<AddIcon />} variant="outlined" onClick={() => setAddPanel(panel)} style={{float:"right", marginTop:"5px"}}>Create</Button>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -121,11 +127,36 @@ const PanelManagement = () => {
               <TableCell align="left"><b>Panel ID</b></TableCell>
               <TableCell align="center"><b>Panel Members</b></TableCell>
               <TableCell align="center"><b>Allocated Groups</b></TableCell>
-              <TableCell align="center"><b><Button startIcon={<AddIcon />} variant="outlined" onClick={() => setAddPanel(panel)} style={{float:"right"}}>Create</Button></b></TableCell>
+              <TableCell>
+              <IconButton fontSize="small" aria-label="cancel" style={{float:"right"}}>
+                <CancelIcon onClick={()=>setSearchPanel(() => "")} />
+              </IconButton>
+              <TextField 
+                id="outlined-adornment-weight"
+                label="Search Panels" 
+                variant="standard" 
+                onChange={(e)=>{ setSearchPanel(e.target.value)}}
+                value={searchPanel} 
+                style={{float:"right"}} 
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {panels.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((panel, index) => (
+            { panels.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).filter((panel)=>{
+              if(searchPanel === ""){
+                return panel;
+              } else if(panel.id.toLowerCase().includes(searchPanel.toLowerCase())) {
+                return panel;
+              }
+            }).map((panel, index) => (
               <TableRow
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

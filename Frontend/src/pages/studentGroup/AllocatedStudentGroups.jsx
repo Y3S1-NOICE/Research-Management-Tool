@@ -15,12 +15,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { assignMarks, fetchStudentGroup } from '../../api/studentGroupApi';
+import { assignMarks, evaluateStudentGroupByPanel, fetchStudentGroup } from '../../api/studentGroupApi';
 import { fetchPanel } from '../../api/panelApi';
 import { getAuth } from '../../helper/helper';
 import { AssignMarksForm } from './AssignMarksForm';
 import ID from "nodejs-unique-numeric-id-generator";
 import toast, { Toaster } from 'react-hot-toast';
+import { TopicFeedbackForm } from './ProvideTopicFeedback';
 
 export default function AllocatedStudentGroups() {
   let id = getAuth().id;
@@ -32,9 +33,11 @@ export default function AllocatedStudentGroups() {
   const [evaluation, setEvaluation] = useState([])
   const [group, setGroup] = useState("")
   const [evaluationData, setEvaluationData] = useState("");
+  const [topicEvData, setTopicEvData] = useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const [topicData, setTopicData] = useState({})
+  const [editOpen, setEditOpen] = useState(false);
 
   let groupData = [...groupDataT, ...groupDataP]
   const [open, setOpen] = React.useState(false);
@@ -92,6 +95,26 @@ export default function AllocatedStudentGroups() {
     })
   };
 
+  const handleClickOpenTopicEvDialog = (grpId) => {
+    setEditOpen(true);
+    setTopicEvData({
+      panelEvaluateFeedbacks:"",
+    })
+    setGroupId(grpId);
+    fetchStudentGroup(`id=${grpId}`)
+    .then((res) =>{
+      setTopicEvData(res.data.responseData[0].panelEvaluateFeedbacks);
+      console.log('hi'+res.data.responseData[0].panelEvaluateFeedbacks);
+      setGroup(res.data.responseData[0]);
+    }).catch((err) =>{
+      console.err(err);
+    })
+  };
+
+  const handleCloseTopicEvDialog = () => {
+    setEditOpen(false);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -135,6 +158,44 @@ export default function AllocatedStudentGroups() {
         console.error(err);
     })
     setOpen(false);
+  }
+
+  const handleSubmitTopicFeedback = (data) =>{
+    const feedbackObj = {
+        panelEvaluateFeedbacks:data.panelEvaluateFeedbacks
+    };
+    evaluateStudentGroupByPanel(groupId, feedbackObj)
+    .then((res) =>{
+      toast.success('Feedback Provided!', {
+        position: "top-right",
+        style: {
+          border: '1px solid #713200',
+          padding: '16px',
+          color: 'white',
+          background: '#4BB543'
+        },
+        iconTheme: {
+          primary: 'green',
+          secondary: '#FFFAEE',
+        },
+      });
+      console.log(res.data)
+    }).catch((err) =>{
+      toast.error('Mark Allocation Unsuccessful!', {
+        position: "top-right",
+        style: {
+          padding: '16px',
+          color: 'white',
+          background: '#FF0000'
+        },
+        iconTheme: {
+          primary: 'red',
+          secondary: '#FFFAEE',
+        },
+      });
+        console.error(err);
+    })
+    setEditOpen(false);
   }
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -198,7 +259,10 @@ export default function AllocatedStudentGroups() {
                       </Grid>
                       <Divider orientation="vertical" flexItem></Divider>
                         <Grid item xs>
-                        <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                          <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                        </Grid>
+                        <Grid item xs>
+                          <Button variant='contained' onClick={()=>handleClickOpenTopicEvDialog(row.id)}>Topic Evaluation Feedback</Button>
                         </Grid>
                       </Grid><br/>
                     </>:
@@ -289,6 +353,33 @@ export default function AllocatedStudentGroups() {
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose}>CLOSE</Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog open={editOpen} onClose={handleCloseTopicEvDialog} fullWidth={true} maxWidth={"lg"}>
+                <DialogTitle><b>Topic Evaluation Feedback</b></DialogTitle>
+                <DialogContent>
+                  <DialogContentText>
+                    Current Feedback - <b>{group.panelEvaluateFeedbacks}</b>
+                  </DialogContentText><br/>
+
+                    <Grid item xs={6}>
+                        {
+                          topicEvData?(
+                            <div>
+                              <Container maxWidth="100%">
+                                  <TopicFeedbackForm topicObj={topicEvData} onSubmit={handleSubmitTopicFeedback}/>
+                              </Container>
+                            </div>
+                          ):(
+                            <div>
+                              Loading....
+                            </div>
+                          )
+                        }
+                      </Grid>
+                  </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseTopicEvDialog}>CLOSE</Button>
                 </DialogActions>
               </Dialog>
               </AccordionDetails>
