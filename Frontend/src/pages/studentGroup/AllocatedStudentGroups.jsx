@@ -21,6 +21,11 @@ import { getAuth } from '../../helper/helper';
 import { AssignMarksForm } from './AssignMarksForm';
 import ID from "nodejs-unique-numeric-id-generator";
 import toast, { Toaster } from 'react-hot-toast';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
 
 export default function AllocatedStudentGroups() {
   let id = getAuth().id;
@@ -35,6 +40,8 @@ export default function AllocatedStudentGroups() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const [topicData, setTopicData] = useState({})
+
+  const [value, setValue] = React.useState('1');
 
   let groupData = [...groupDataT, ...groupDataP]
   const [open, setOpen] = React.useState(false);
@@ -157,6 +164,10 @@ export default function AllocatedStudentGroups() {
       setPage(0);
   };
 
+  const handleChangeTabs = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div>
       <br />
@@ -198,7 +209,10 @@ export default function AllocatedStudentGroups() {
                       </Grid>
                       <Divider orientation="vertical" flexItem></Divider>
                         <Grid item xs>
-                        <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                          <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
+                        </Grid>
+                        <Grid item xs>
+                          <Button variant='contained' onClick={()=>handleClickOpen(row.id)}>EVALUATION DETAILS</Button>
                         </Grid>
                       </Grid><br/>
                     </>:
