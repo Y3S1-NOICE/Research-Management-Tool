@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchSubmissionTypes } from "../../api/submissionTypesApi";
 import Uploader from "../../components/cards/Uploader";
-import { handleError } from "../../helper/helper";
-
+import { handleToast } from "../../helper/helper";
 
 export default function Submissions() {
     const [submissionTypes, setSubmissionTypes] = useState([]);
@@ -17,9 +16,9 @@ export default function Submissions() {
                 console.log(res)
                 res.data.isSuccessful ? 
                     setSubmissionTypes(res.data.responseData) : 
-                    handleError(res);
+                    handleToast();
             })
-            .catch((error) => handleError(error));
+            .catch(() => handleToast());
     }
 
     return (

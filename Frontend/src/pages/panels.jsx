@@ -130,7 +130,6 @@ const PanelManagement = () => {
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                {/* <TableCell component="th" scope="row">{reservation.id}</TableCell> */}
                 <TableCell component="th" scope="row" align="left">{panel.id}</TableCell>
                 <TableCell align="center">
                     {PanelMemberDetails(panel)}
