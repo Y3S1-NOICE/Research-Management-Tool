@@ -191,7 +191,7 @@ const MyChat = (props) => {
                                         <>
                                             <li className="me">
                                                 <div className="entete">
-                                                <h2>{messages.sender}</h2>
+                                                <h2>{messages.sender}(You)</h2>
                                                     <h3 style={{marginLeft:"5px"}}>{messages.createdAt.substring(messages.createdAt.indexOf('T') + 1).split(":", 2).join(":")}</h3>
                                                     <span className="status blue"></span>
                                                 </div>
