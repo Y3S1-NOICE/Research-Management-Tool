@@ -18,7 +18,7 @@ const { STUDENT, ADMIN, PANEL_MEMBER, SUPERVISOR } = roles;
 const router = express.Router();
 
 router.post('/', authorize(STUDENT), registerStudentGroup);
-router.get('/', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR), fetchAllStudentGroups);
+router.get('/', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR, STUDENT), fetchAllStudentGroups);
 router.put('/:id/supervisors', authorize(STUDENT), requestSupervisor);
 router.put('/:id/cosupervisors', authorize(STUDENT), requestCoSupervisor);
 router.put('/:id/panels', authorize(ADMIN), allocateOrDeallocatePanels);
