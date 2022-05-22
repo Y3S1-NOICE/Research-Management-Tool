@@ -167,7 +167,8 @@ const updateResearchTopicDetails = (req, res) =>{
             area: req.body.area,
             supervisorIsAccepted: req.body.supervisorIsAccepted === "ACCEPTED" ? req.body.supervisorIsAccepted : "Not Accepted",
             coSupervisorIsAccepted: req.body.supervisorIsAccepted === "ACCEPTED" ? req.body.coSupervisorIsAccepted : "Not Accepted"
-         }
+         },
+         status:"Topic Registered"
        }
     studentGroup.findOneAndUpdate(filter, getTopicDetails, (error, updatedGroupDetails) =>{
         !updatedGroupDetails ?
