@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import {useForm} from 'react-hook-form'
 
 export const AssignMarksForm = ({markObj, onSubmit})=>{
-    const {register, handleSubmit} = useForm({
+    const {register, handleSubmit, formState:{errors}} = useForm({
         defaultValues: {
             evaluationType:markObj ? markObj.evaluationType : "",
             marks:markObj ? markObj.marks : "",
@@ -24,12 +24,12 @@ export const AssignMarksForm = ({markObj, onSubmit})=>{
         </center>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={12}>
-                    <TextField label="Evaluation Type" name="evaluationType" type="text" size="small" fullWidth="true" 
-                    {...register("evaluationType")} />
+                    <TextField error={errors.evaluationType} label="Evaluation Type" name="evaluationType" type="text" size="small" fullWidth="true" 
+                    {...register("evaluationType", {required: true})} helperText={errors.evaluationType && "This is a required field!"}/>
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField label="Marks" name="marks" type="text" size="small" fullWidth="true"
-                    {...register("marks" )} />
+                    <TextField error={errors.marks} label="Marks" name="marks" type="text" size="small" fullWidth="true"
+                    {...register("marks", {required: true} )} helperText={errors.marks && "This is a required field!"}/>
                 </Grid>
             </Grid>
                <br />

@@ -17,13 +17,16 @@ const { STUDENT, ADMIN, PANEL_MEMBER, SUPERVISOR } = roles;
 
 const router = express.Router();
 
+//Student Group Functionality
 router.post('/', authorize(STUDENT), registerStudentGroup);
-router.get('/', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR), fetchAllStudentGroups);
+router.get('/', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR, STUDENT), fetchAllStudentGroups);
 router.put('/:id/supervisors', authorize(STUDENT), requestSupervisor);
 router.put('/:id/cosupervisors', authorize(STUDENT), requestCoSupervisor);
 router.put('/:id/panels', authorize(ADMIN), allocateOrDeallocatePanels);
 router.put('/:id/evaluations', authorize(PANEL_MEMBER), assignMarks);
 router.get('/details/', authorize(STUDENT,ADMIN, PANEL_MEMBER, SUPERVISOR), fetchStudentGroup);
+
+//Research Topic Functionality
 router.put('/:id/updateTopic', authorize(ADMIN, STUDENT), updateResearchTopicDetails);
 router.put('/:id/evaluateStudentGroup', authorize(ADMIN, PANEL_MEMBER, SUPERVISOR), evaluateStudentGroupByPanel);
 router.put('/:id/status', authorize(SUPERVISOR), acceptRejectGroup);
