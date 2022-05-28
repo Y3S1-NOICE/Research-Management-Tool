@@ -4,7 +4,8 @@ import mockingoose from 'mockingoose';
 describe('Unit Test for chat', () => {
     it('This test should create a chat group', () => {
         mockingoose(chat)
-        .toReturn({ id: "chat0001",
+        .toReturn({ 
+        id: "chat0001",
         chatName: "chat001",
         userIds: ["S001", "IT001", "IT003"],
         messages: [{

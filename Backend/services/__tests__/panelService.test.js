@@ -4,9 +4,10 @@ import mockingoose from 'mockingoose';
 describe('Unit Test for panel', () => {
     it('This test should create a panel', () => {
         mockingoose(panel)
-        .toReturn({ id: 'Panel0001',
-        panelMembers: ['P0001', 'P0002', 'P0003'],
-        allocatedGroups: ['G0001', 'G0002', 'G0003'], }, 'save')
+        .toReturn({ 
+            id: 'Panel0001',
+            panelMembers: ['P0001', 'P0002', 'P0003'],
+            allocatedGroups: ['G0001', 'G0002', 'G0003'], }, 'save')
     });
 
     it('This test should find all Panels', () => {
