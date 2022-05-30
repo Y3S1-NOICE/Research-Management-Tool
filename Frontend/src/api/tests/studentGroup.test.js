@@ -75,7 +75,7 @@ test("Request a supervisor", async () =>{
 //Test requesting a Co-supervisor 
 test("Request a co-supervisor", async () =>{
     const response ={
-        supervisorId: "S0002",
+        cosupervisorId: "S0002",
         status: "Co-Supervisor Pending"
     }  
     const groupId = 'G0001'
