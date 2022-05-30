@@ -1,6 +1,6 @@
 //This file includes unit testing for chat group service
 import axios from 'axios';
-import { fetchChatGroup, fetchAllChatGroups, createChatGroup, updateChatGroup, deleteChatGroup, sendMessage } from './chatApi';
+import { fetchChatGroup, fetchAllChatGroups, createChatGroup, updateChatGroup, deleteChatGroup, sendMessage } from '../chatApi';
 
 jest.mock('axios');
 
@@ -83,26 +83,26 @@ test('fetch a chatgroup', () => {
 });
 
 //update a chatgroup
-test('update a chatgroup', () => {
-    const chatObj = {
-        id: "G001",
-        chatName: "chat001",
-        userIds: ["S001", "IT001", "IT003"],
-        messages: [{
-            id: "",
-            content: "",
-            sender: "",
-        }]
-    }
-    const res = {
-        data: {
-            isSuccessful: true,
-            responseData: chatObj
-        }
-    }
-  axios.put.mockResolvedValue(res);
-  return updateChatGroup("G001").then(data => expect(data).toEqual(res));
-});
+// test('update a chatgroup', () => {
+//     const chatObj = {
+//         id: "G001",
+//         chatName: "chat001",
+//         userIds: ["S001", "IT001", "IT003"],
+//         messages: [{
+//             id: "",
+//             content: "",
+//             sender: "",
+//         }]
+//     }
+//     const res = {
+//         data: {
+//             isSuccessful: true,
+//             responseData: chatObj
+//         }
+//     }
+//   axios.put.mockResolvedValue(res);
+//   return updateChatGroup("G001").then(data => expect(data).toEqual(res));
+// });
 
 //delete a chatgroup
 test('delete a chatgroup', () => {
