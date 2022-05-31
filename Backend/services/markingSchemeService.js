@@ -3,6 +3,7 @@ import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
 import { errorMessage } from "../utils/errorMessages.js";
 
+//Retrive marking schemes
 const findMarkingSchemes = (req, res) => {
     const filter = {};
     const {id, name, published} = req.query;
@@ -19,6 +20,7 @@ const findMarkingSchemes = (req, res) => {
         })
 }
 
+//Create new marking schemes
 const createMarkingScheme = (req, res) => {
     const newMarkingScheme = markingScheme(req.body);
     newMarkingScheme.save((error) => {
@@ -30,6 +32,7 @@ const createMarkingScheme = (req, res) => {
     });
 }
 
+//Update marking scheme by id
 const updateMarkingScheme = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
     const getUpdatedData = { new: true };
@@ -46,6 +49,7 @@ const updateMarkingScheme = (req, res) => {
     });       
 }
 
+//Delete marking scheme by id
 const deleteMarkingScheme = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
 

@@ -3,6 +3,7 @@ import { jsonResponse, decodeJwt } from "../utils/serviceUtilities.js";
 import http from "../utils/httpStatusCodes.js";
 import { errorMessage } from "../utils/errorMessages.js";
 
+//authorizing middleware
 const authorize = (...eligibleRoles) => {
     return (req, res, next) => {
         const { role } = decodeJwt(req.headers.authentication);
@@ -12,6 +13,7 @@ const authorize = (...eligibleRoles) => {
     }
 }
 
+//authenticating middleware
 const authenticate = (req, res, next) => {
     const { authentication } = req.headers;
     if(!authentication) return res.status(http.AUTHENTICATION_FAIL)

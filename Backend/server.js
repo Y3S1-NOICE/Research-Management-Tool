@@ -13,8 +13,6 @@ import { default as submissionTypesRouter } from "./routes/submissionTypesRoutes
 import { default as templateRoutes } from "./routes/templateRoutes.js";
 import { default as markingSchemeRoutes } from "./routes/markingSchemeRoutes.js";
 
-
-
 // Enable .env file
 dotenv.config();
 const PORT = process.env.PORT;
@@ -30,8 +28,8 @@ app.use(express.json());
 
 app.use('/login', authRouter);
 app.use('/signup', userRouter);
-// This line(line 27) will authenticate every route/request below this line.
-//If you do not want to authenticate your request/route, add your route above this line as in line 23
+
+// This line will authenticate every route/request below this line.
 app.use(authenticate);
 
 app.use('/users', userRouter);

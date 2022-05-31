@@ -3,6 +3,7 @@ import { errorMessage } from "../utils/errorMessages.js";
 import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
 
+//Create new submission types
 const createSubmissionType = (req, res) => {
     const newSubmissionType = submissionType(req.body);
     newSubmissionType.save((error) => {
@@ -14,6 +15,7 @@ const createSubmissionType = (req, res) => {
     });
 }
 
+//Update Submission types
 const updateSubmissionType = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
     const getUpdatedData = { new: true };
@@ -30,6 +32,7 @@ const updateSubmissionType = (req, res) => {
     });       
 }
 
+//Find submission types
 const findSubmissionTypes = (req, res) => {
     const filter = {};
     const { id, name, folder, status, published } = req.query;
@@ -48,6 +51,7 @@ const findSubmissionTypes = (req, res) => {
         })
 }
 
+//Delete submission type by id
 const deleteSubmissionType = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
 

@@ -4,6 +4,7 @@ import { jsonResponse } from "../utils/serviceUtilities.js";
 import http from "../utils/httpStatusCodes.js";
 import { errorMessage } from "../utils/errorMessages.js";
 
+//Login
 const login = (req, res) => {
     const { email, password } = req.body;
     const filter = { email, password };
