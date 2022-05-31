@@ -16,7 +16,7 @@ const style = {
   position: "fixed",
   left: "0",
   bottom: "0",
-  height: "20px",
+  height: "55px",
   width: "100%",
   color: "white",
   fontSize: "14px"
@@ -40,7 +40,10 @@ root.render(
       {toastContainer()}
       <App />
       <br/><br/><br/>
-      <div style={style}>@Copyright 2022 RMT APP</div>
+      <div style={style}>@Copyright 2022 RMT APP
+      <br/>
+      </div>
+      <br/><br/>
       </div>
     </Typography>
   </StrictMode>
