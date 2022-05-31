@@ -3,33 +3,34 @@ import axios from 'axios';
 
 jest.mock('axios');
 
-// Unit test for creating a research topic
-test('Should create topic', () => {
-    const topic = {
-        topic: 'Software Engineering',
-        area: 'ReactJS',
-    }
-    const response = {
-        data: {
-            isSuccessful: true,
-            responseData: user
-        }
-    }
-  axios.post.mockResolvedValue(response);
-  return updateResearchTopicDetails(topic).then(data => expect(data).toEqual(response));
-});
-
-// Unit test for evaluating students by panel
-test('Should evaluate students by panel', () => {
-    const topic = {
+        test("Should evaluate students by panel", async () =>{
+        const response = {
             panelEvaluateFeedbacks: 'great topic',
         }
-        const response = {
-            data: {
-                isSuccessful: true,
-                responseData: user
-            }
+        const groupId = 'G0001'
+        const request={
+            topic: 'Software Engineering',
+            area: 'ReactJS'
         }
-      axios.post.mockResolvedValue(response);
-      return evaluateStudentGroupByPanel(topic).then(data => expect(data).toEqual(response));
-    });
+        axios.put.mockResolvedValueOnce(response);
+        const result = await evaluateStudentGroupByPanel(groupId, request);
+        expect(result).toEqual(response);
+        return result;
+    })
+
+    test("Should create topic", async () =>{
+        const response = {
+            topic: 'Software Engineering',
+            area: 'ReactJS',
+        }
+        const groupId = 'G0001'
+        const request={
+            topic: 'Software Engineering',
+            area: 'ReactJS'
+        }
+        axios.put.mockResolvedValueOnce(response);
+        const result = await updateResearchTopicDetails(groupId, request);
+        expect(result).toEqual(response);
+        return result;
+    })
+    
