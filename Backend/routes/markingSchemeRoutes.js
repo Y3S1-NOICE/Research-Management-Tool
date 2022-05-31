@@ -3,7 +3,7 @@ import { authorize } from "../middleware/auth.js";
 import { createMarkingScheme, deleteMarkingScheme, findMarkingSchemes, updateMarkingScheme } from "../services/markingSchemeService.js";
 import { roles } from "../utils/utilities.js";
 
-const { STUDENT, ADMIN } = roles;
+const { ADMIN } = roles;
 
 const router = express.Router();
 
