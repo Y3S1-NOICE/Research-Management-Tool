@@ -3,7 +3,7 @@ import { authorize } from "../middleware/auth.js";
 import { roles } from "../utils/utilities.js";
 import { createSubmissionType, deleteSubmissionType, findSubmissionTypes, updateSubmissionType } from "../services/submissionTypeServices.js";
 
-const { STUDENT, ADMIN } = roles;
+const { ADMIN } = roles;
 
 const router = express.Router();
 

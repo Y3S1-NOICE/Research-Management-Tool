@@ -3,6 +3,7 @@ import { errorMessage } from "../utils/errorMessages.js";
 import http from "../utils/httpStatusCodes.js";
 import { jsonResponse } from "../utils/serviceUtilities.js";
 
+//Create new template 
 const createTemplate = (req, res) => {
     const newTemplate = template(req.body);
     newTemplate.save((error) => {
@@ -14,6 +15,7 @@ const createTemplate = (req, res) => {
     });
 }
 
+//Update a template by id
 const updateTemplate = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
     const getUpdatedData = { new: true };
@@ -30,6 +32,7 @@ const updateTemplate = (req, res) => {
     });       
 }
 
+//find templates
 const findTemplates = (req, res) => {
     const filter = {};
     const { id, name, folder, published } = req.query;
@@ -47,6 +50,7 @@ const findTemplates = (req, res) => {
         })
 }
 
+//Delete a template by id
 const deleteTemplate = (req, res) => {
     const filter = { _id: req.query.id || 'inavlidId' };
 

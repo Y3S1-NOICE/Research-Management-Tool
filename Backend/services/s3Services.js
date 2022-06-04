@@ -7,6 +7,7 @@ import { errorMessage } from '../utils/errorMessages.js';
 
 const unlinkFile = util.promisify(fs.unlink);
 
+//uploadig a file to S3
 const uploadFile = async (req, res) => {
     const file = req.file;
     const {folder, type} = req.query;
@@ -24,6 +25,7 @@ const uploadFile = async (req, res) => {
     }
 }
 
+//geeting file from S3 bucket
 const getFile = async (req, res) => {
     const { folder ,type , key } = req.params;
     const fileKey = type ? 
@@ -37,6 +39,7 @@ const getFile = async (req, res) => {
     }
 }
 
+//Deleting file from S3 bucket
 const deleteFile = async (req, res) => {
     const { folder ,type , key } = req.params;
     const fileKey = type ? 
@@ -51,6 +54,7 @@ const deleteFile = async (req, res) => {
     }
 }
 
+//Get files meta data from S3bucket
 const getFilesList = async (req, res) => {
     const { folder, type } = req.query;
     const folderName = type ? 
